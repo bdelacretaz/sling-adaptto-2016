@@ -4,5 +4,6 @@
 export IP=`/sbin/ip route|awk '/default/ { print $3 }'`
 export URL="http://etcd:4001/v2/keys/sling/instances/`hostname`"
 echo "Announcing IP $IP and port $SLING_PORT to $URL"
-curl ${URL}/ip -XPUT -d value=$IP
-curl ${URL}/port -XPUT -d value=$SLING_PORT
+
+# TODO need json escapes
+curl ${URL} -XPUT -d value="{\"ip\":\"$IP\",\"port\":\"$SLING_PORT\",\"domain\":\"$SLING_DOMAIN\"}"

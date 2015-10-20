@@ -24,3 +24,16 @@ sling_001:
     environment:
        - SLING_DB=sling_001
        - SLING_PORT=8080
+       - SLING_DOMAIN=alpha.example.com
+
+sling_002:
+    build: sling
+    ports:
+        - "8081:8081"
+    links:
+        - mongo
+        - etcd
+    environment:
+       - SLING_DB=sling_002
+       - SLING_PORT=8081
+       - SLING_DOMAIN=bravo.example.com
