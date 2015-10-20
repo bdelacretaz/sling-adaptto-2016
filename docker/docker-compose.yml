@@ -4,6 +4,13 @@ etcd:
 mongo:
     image: mongo:3.0
 
+haproxy:
+    build: haproxy
+    ports:
+        - "80:80"
+    links:
+        - etcd
+
 sling_001:
     build: sling
     ports:
