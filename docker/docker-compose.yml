@@ -1,0 +1,15 @@
+etcd:
+    image: quay.io/coreos/etcd:v0.4.6
+
+mongo:
+    image: mongo:3.0
+
+sling_001:
+    build: sling
+    ports:
+        - "8080:8080"
+    links:
+        - mongo
+        - etcd
+    environment:
+       - SLING_OPTS=-Dsling.run.modes=oak_mongo,oak -Doak.mongo.uri=mongodb://mongo:27017 -Doak.mongo.db=sling_001 -p 8080
