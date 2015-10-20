@@ -1,0 +1,6 @@
+[template]
+src = "haproxy.conf.tmpl"
+dest = "/tmp/haproxy.conf"
+keys = [
+    "/sling/instances"
+]
