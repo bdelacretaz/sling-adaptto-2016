@@ -1,5 +1,8 @@
 etcd:
     image: quay.io/coreos/etcd:v0.4.6
+    
+    # need to advertise the correct address for confd
+    command: -addr=etcd:4001
 
 mongo:
     image: mongo:3.0

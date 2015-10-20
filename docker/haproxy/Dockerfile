@@ -10,4 +10,4 @@ RUN chmod +x /usr/local/bin/confd
     
 COPY fsroot /
 
-CMD ["/usr/local/bin/confd","-debug","-verbose","--config-file=/etc/confd/conf.d/haproxy.toml","-node=http://etcd:4001"]
+CMD ["/usr/local/bin/confd","-interval=2","-verbose","--config-file=/etc/confd/conf.d/haproxy.toml","-node=http://etcd:4001"]
