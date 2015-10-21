@@ -7,6 +7,11 @@ them available via a front-end HAProxy server.
 The goals are to experiment with Sling in Docker and demonstrate automatic reconfiguration of related services
 like HAProxy when Sling instances appear or disappear.
 
+Apart from some glue scripts to setup the containers there's little or no code here, the goal is to use off-the-shelf
+tools as much as possible, to concentrate on the proof of concept aspects. 
+
+This is obviously not production-ready.
+
 ## Prerequisites
 You need a Docker server and docker-compose setup to run this.
 
@@ -14,7 +19,7 @@ Unless you already have such a setup, https://www.docker.com/docker-toolbox is a
 
 After installing `docker-compose`, you can test it from this folder, as follows:
 
-	docker-compose -f docker-compose-test.yml up
+	$ docker-compose -f docker-compose-test.yml up
 	Starting dockerslinghosting_docker-setup-test_1...
 	Attaching to dockerslinghosting_docker-setup-test_1
 	docker-setup-test_1 | Congratulations, your docker-compose setup works. See the docker subfolder for the actual Sling hosting setup.
@@ -48,14 +53,14 @@ So, from the `docker` folder found under this `README` file:
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up mongo etcd
+	docker-compose up -d mongo etcd
 	
 	# wait a few seconds for those to start up, and start the other containers
-	docker-compose up
+	docker-compose up -d
 
-After a few seconds, tests hosts like http://alpha.example.com should then be proxied to the Sling container instances.
+After a few seconds, tests hosts like http://alpha.example.com should be proxied to the Sling container instances.
 
-The HAPRoxy stats are available at http://alpha.example.com:81
+The HAProxy stats are available at http://alpha.example.com:81
 
 ## Adding more Sling hosts
 Copying and adapting the `sling_001` section of the `docker/docker-compose.yml` file and running `docker-compose up SSS` where
@@ -64,3 +69,14 @@ SSS is the name of the new container should start a new Sling instance.
 Starting a new instance should cause it to be registered automatically in the HAproxy container, so the corresponding host (as
 defined by the SLING_DOMAIN variable in the `docker-compose.yml`) should become available, provided you have added the 
 corresponding `/etc/hosts` entry.
+
+## TODO - known issues
+I'm getting HTTP connection resets from HAproxy as I write this. Running the `util/check-sling.sh` shows about 10% failures.
+When testing from a browser this translates into missing CSS or image resources, for example, from time to time.
+
+## Tips & tricks (aka notes to self)
+This rebuilds and runs a single container (here `haproxy`) in interactive mode, for debugging:
+
+    docker run -it --link docker_etcd_1:etcd $(docker-compose build haproxy | grep "Successfully" | cut -d' ' -f3) bash
+
+
