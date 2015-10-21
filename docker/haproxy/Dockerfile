@@ -1,9 +1,11 @@
 FROM haproxy:1.5.14
 MAINTAINER bdelacretaz@apache.org
 
+# TODO nano and procps are for debugging only
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y nano && \
+    apt-get install -y procps && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CONFD_MD5=1bc02600fa2dc33f9cdaf7b1fd189cfd
