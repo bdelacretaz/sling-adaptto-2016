@@ -32,12 +32,13 @@ function generate_config() {
 	  set $(echo $i | tr ':' ' ')
 	  echo "backend B_$1"
 	  echo "    description $1 backend (from $ME)"
-	  echo "    balance source"
+	  echo "    balance leastconn"
 	  echo "    option httpclose"
 	  echo "    option forwardfor"
 	  echo "    # TODO testing options for connection reset problem"
 	  echo "    option forceclose"
-	  echo "    server S_$1 $2:$3 check"
+	  # TODO add health checks?
+	  echo "    server S_$1 $2:$3"
 	  echo
 	done
 }
