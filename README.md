@@ -76,6 +76,7 @@ corresponding `/etc/hosts` entry.
 ## TODO - known issues
 I'm getting HTTP connection resets from HAproxy as I write this. Running the `util/check-sling.sh` shows about 10% failures.
 When testing from a browser this translates into missing CSS or image resources, for example, from time to time.
+See https://github.com/bdelacretaz/docker-sling-hosting/issues/1 for details.
 
 The internal Sling instance port numbers should be assigned dynamically.
 
@@ -84,4 +85,4 @@ The cluster probably only works on a single Docker host so far, we'll need ambas
 ## Tips & tricks (aka notes to self)
 This rebuilds and runs a single container (here `haproxy`) in interactive mode, for debugging:
 
-    docker run -it --link docker_etcd_1:etcd $(docker-compose build haproxy | grep "Successfully" | cut -d' ' -f3) bash
+    docker run -p 80:80 -p 81:81 -it --link docker_etcd_1:etcd $(docker-compose build haproxy | grep "Successfully" | cut -d' ' -f3) bash
