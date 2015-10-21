@@ -67,10 +67,10 @@ The HAProxy stats are available at http://alpha.example.com:81
 Copying and adapting the `sling_001` section of the `docker/docker-compose.yml` file and running `docker-compose up SSS` where
 SSS is the name of the new container should start a new Sling instance.
 
-Make sure to give a unique port number to each Sling instance if you do that.
+Make sure to give a unique port number and `SLING_DB` to each Sling instance if you do that.
 
 Starting a new instance should cause it to be registered automatically in the HAproxy container, so the corresponding host (as
-defined by the SLING_DOMAIN variable in the `docker-compose.yml`) should become available, provided you have added the 
+defined by the `SLING_DOMAIN` variable in the `docker-compose.yml`) should become available, provided you have added the 
 corresponding `/etc/hosts` entry.
 
 ## TODO - known issues
