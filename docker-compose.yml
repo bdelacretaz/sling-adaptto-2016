@@ -1,0 +1,4 @@
+# docker-compose file used to test the docker-compose setup
+docker-setup-test:
+    image: busybox:1.24.0
+    command: sh -c "echo Congratulations, your docker-compose setup works. See the docker subfolder for the actual Sling hosting setup. ; exit"
