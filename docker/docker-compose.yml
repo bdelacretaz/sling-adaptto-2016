@@ -11,6 +11,7 @@ haproxy:
     build: haproxy
     ports:
         - "80:80"
+        - "81:81"
     links:
         - etcd
 

@@ -1,5 +1,4 @@
-TODO convert this to haproxy config file
 {{range gets "/sling/instances/*"}}
-  {{$data := json .Value}}
-  container {{base .Key}} is at {{ $data.ip }} port {{ $data.port }} domain ¢{{ $data.domain }}
+{{$data := json .Value}}
+{{ $data.domain }}#{{ $data.ip }}#{{ $data.port }}#{{base .Key}}
 {{end}}

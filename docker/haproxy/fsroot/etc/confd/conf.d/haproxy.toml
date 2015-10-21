@@ -1,6 +1,7 @@
 [template]
 src = "haproxy.conf.tmpl"
-dest = "/tmp/haproxy.conf"
+dest = "/tmp/backends.txt"
 keys = [
     "/sling/instances"
 ]
+reload_cmd = "/bin/bash /reload.sh"
