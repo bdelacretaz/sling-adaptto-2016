@@ -32,13 +32,12 @@ function generate_config() {
 	  # $1:domain, $2:IP, $3:port
 	  set $(echo $i | tr ':' ' ')
 	  echo "backend B_$1"
-	  echo "    description $1 backend (from $ME)"
+	  echo "    description $1 backend (http://$2:$3, from $ME)"
 	  echo "    balance roundrobin"
 	  echo "    option httpclose"
 	  echo "    option forwardfor"
-	  # TODO add health checks?
-	  # option httpchk HEAD /check.txt HTTP/1.0
-	  echo "    server S_$1 $2:$3"
+	  # TODO health check info should be provided by Sling backend
+	  echo "    server S_$1 $2:$3 check"
 	  echo
 	done
 }
