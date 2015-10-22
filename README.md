@@ -2,7 +2,8 @@
 This is a prototype Docker hosting of Sling instances.
 
 For now, it connects a number of Sling instances to a common MongoDB database, and automatically makes
-them available via a front-end HAProxy server.
+them available via a front-end HAProxy server. Logs are collected in a Graylog instance. All these services
+run in Docker containers.
 
 The goals are to experiment with Sling in Docker and demonstrate automatic reconfiguration of related services
 like HAProxy when Sling instances appear or disappear.
@@ -77,7 +78,7 @@ type GELF TCP on port 12201.
 
 Once that's done the search interface at http://alpha.example.com:9000/ should show messages emitted by the Sling
 containers at regular intervals. For now these are simulated, like "Hello from delta.example.com/a96333b3f7b7...", 
-we'll need to collect the Sling logging subsystem to graylog using a specific Logback GELF appender.
+we'll need to connect the Sling logging subsystem to graylog using a specific Logback GELF appender.
 
 ## Adding more Sling hosts
 Copying and adapting the `sling_001` section of the `docker/docker-compose.yml` file and running `docker-compose up SSS` where
@@ -89,8 +90,11 @@ Starting a new instance should cause it to be registered automatically in the HA
 defined by the `SLING_DOMAIN` variable in the `docker-compose.yml`) should become available, provided you have added the 
 corresponding `/etc/hosts` entry.
 
+The logs of the new instance will also appear automatically in Graylog.
+
 ## TODO - known issues
-The internal Sling instance port numbers should be assigned dynamically.
+The internal Sling instance port numbers should be assigned dynamically. And we shouldn't need to expose them outside of
+the Docker host, this is done for debugging purposes for now.
 
 No real logs are sent to graylog yet, the current setup just demonstrates how container logs can
 be aggregated in graylog.
