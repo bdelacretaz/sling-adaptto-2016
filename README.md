@@ -17,6 +17,9 @@ You need a Docker server and `docker-compose` setup to run this.
 
 Unless you already have such a setup, https://www.docker.com/docker-toolbox is a good way to get started.
 
+You Docker host needs at least 4G of memory to run this cluster comfortably. See the `docker-machine` docs
+for the relevant options for your machine backend, if applicable.
+
 After installing `docker-compose`, you can test it from this folder, as follows:
 
 	$ docker-compose -f docker-compose-test.yml up
@@ -47,7 +50,7 @@ Replace 192.168.99.100 with the address of your Docker host if needed. `docker-m
 that value if you are using `docker-machine`.
 
 ## Starting the cluster
-To start the cluster, for now it's safer to start the `mongo` and `etcd` containers first, as (pending more
+To start the cluster, for now it's safer to start the `mongo`, `graylog` and `etcd` containers first, as (pending more
 testing) there might be startup timing issues otherwise.
 
 So, from the `docker` folder found under this `README` file:
@@ -57,7 +60,7 @@ So, from the `docker` folder found under this `README` file:
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up -d mongo etcd
+	docker-compose up -d mongo etcd graylog
 	
 	# wait a few seconds for those to start up, and start the other containers
 	docker-compose up -d
@@ -65,6 +68,16 @@ So, from the `docker` folder found under this `README` file:
 After a few seconds, tests hosts like http://alpha.example.com should be proxied to the Sling container instances.
 
 The HAProxy stats are available at http://alpha.example.com:81
+
+## Configuring graylog
+Aggregated logs are provided by graylog at http://alpha.example.com:9000
+
+To collect them you need to configure an input at http://alpha.example.com:9000/system/inputs - create an input of 
+type GELF TCP on port 12201.
+
+Once that's done the search interface at http://alpha.example.com:9000/ should show messages emitted by the Sling
+containers at regular intervals. For now these are simulated, like "Hello from delta.example.com/a96333b3f7b7...", 
+we'll need to collect the Sling logging subsystem to graylog using a specific Logback GELF appender.
 
 ## Adding more Sling hosts
 Copying and adapting the `sling_001` section of the `docker/docker-compose.yml` file and running `docker-compose up SSS` where
@@ -78,6 +91,9 @@ corresponding `/etc/hosts` entry.
 
 ## TODO - known issues
 The internal Sling instance port numbers should be assigned dynamically.
+
+No real logs are sent to graylog yet, the current setup just demonstrates how container logs can
+be aggregated in graylog.
 
 The cluster probably only works on a single Docker host so far, we'll need ambassador containers (or something like Mesos or Kubernetes) to make it multi-host.
 
