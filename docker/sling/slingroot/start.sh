@@ -7,5 +7,6 @@ echo JAVA_OPTS=$JAVA_OPTS
 echo SLING_OPTS=$SLING_OPTS
 
 /bin/bash ./announce.sh
+/bin/bash ./log-simulation.sh &
 
 java $JAVA_OPTS -jar org.apache.sling.launchpad.jar $SLING_OPTS
