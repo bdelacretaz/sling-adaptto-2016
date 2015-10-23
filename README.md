@@ -71,7 +71,7 @@ After a few seconds, tests hosts like http://alpha.example.com should be proxied
 The HAProxy stats are available at http://alpha.example.com:81
 
 ## Configuring graylog
-Aggregated logs are provided by graylog at http://alpha.example.com:9000
+Aggregated logs are provided by graylog at http://alpha.example.com:9000 . The initial credentials are _admin/admin_.
 
 To collect them you need to configure an input at http://alpha.example.com:9000/system/inputs - create an input of 
 type GELF TCP on port 12201.
