@@ -1,12 +1,13 @@
-# docker-sling-hosting
-This is a prototype Docker hosting of Sling instances.
+# Sling adaptTo 2016 demo - can we run the whole Web on Sling?
+This is the demo code for our http://adapt.to/2016/en/schedule/let_s-run-the-whole-web-on-apache-sling-and-oak-.html talk.
+
+Very much a work in progress for now, we'll update this once it's ready to play with.
+
+It's adapted from a previous https://github.com/bdelacretaz/docker-sling-hosting example, including some leftovers from that for now.
 
 For now, it connects a number of Sling instances to a common MongoDB database, and automatically makes
 them available via a front-end HAProxy server. Logs are collected in a Graylog instance. All these services
 run in Docker containers.
-
-The goals are to experiment with Sling in Docker and demonstrate automatic reconfiguration of related services
-like HAProxy when Sling instances appear or disappear.
 
 Apart from some glue scripts to setup the containers there's little or no code here, the goal is to use off-the-shelf
 tools as much as possible, to concentrate on the proof of concept aspects. 
