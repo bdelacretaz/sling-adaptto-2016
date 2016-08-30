@@ -26,7 +26,7 @@ import org.apache.sling.commons.metrics.Timer;
 })
 public class MetricsFilter implements Filter {
 
-    public static final String T_PREFIX = MetricsFilter.class.getName() + ".requests";
+    public static final String T_PREFIX = MetricsFilter.class.getSimpleName() + ".requests";
 
     @Reference
     private MetricsService metrics;
