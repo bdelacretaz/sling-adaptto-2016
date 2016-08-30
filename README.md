@@ -61,6 +61,9 @@ that value if you are using `docker-machine`.
 To start the cluster, for now it's safer to start the `mongo`, `graylog` and `etcd` containers first, as (pending more
 testing) there might be startup timing issues otherwise.
 
+Also, as all Sling instances are sharing the same Mongo database, for now it's safer to start one Sling instance first 
+and wait for it to be ready before starting the others, to avoid any race conditions.
+
 So, from the `docker` folder found under this `README` file:
 
     # Remove existing state, if any
@@ -72,7 +75,12 @@ So, from the `docker` folder found under this `README` file:
     # start the infrastructure containers	
 	docker-compose up -d mongo etcd graylog
 	
-	# wait a few seconds for those to start up, and start the other containers
+	# wait a few seconds for those to start up, and start the first Sling instace
+	docker-compose up -d sling_001
+	
+	# wait for that to be ready (watch http://alpha.example.com)
+	
+    # start the rest
 	docker-compose up -d
 
 After a few seconds, tests hosts like http://alpha.example.com should be proxied to the Sling container instances.

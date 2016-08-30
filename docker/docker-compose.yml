@@ -32,7 +32,7 @@ sling_001:
         - etcd
         - graylog
     environment:
-       - SLING_DB=sling_001
+       - SLING_DB=at16
        - SLING_PORT=8080
        - SLING_DOMAIN=alpha.example.com
 
@@ -45,6 +45,6 @@ sling_002:
         - etcd
         - graylog
     environment:
-       - SLING_DB=sling_002
+       - SLING_DB=at16
        - SLING_PORT=8081
        - SLING_DOMAIN=bravo.example.com
