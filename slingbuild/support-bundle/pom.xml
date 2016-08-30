@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+    <groupId>ch.x42.at16</groupId>
+    <artifactId>support-bundle</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+    <name>Sling adaptoTo() 2016 Support Bundle</name>
+	
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+	
+    <build>
+        <plugins>
+             <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-scr-plugin</artifactId>
+                <version>1.21.0</version>
+                <executions>
+                  <execution>
+                    <id>generate-scr-scrdescriptor</id>
+                    <goals>
+                      <goal>scr</goal>
+                    </goals>
+                    <configuration>
+                      <strictMode>true</strictMode>
+                    </configuration>
+                  </execution>
+                </executions>
+                <dependencies>
+                  <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                    <version>1.5.2</version>
+                    <scope>compile</scope>
+                  </dependency>
+                </dependencies>
+              </plugin>
+              <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+				<version>3.0.1</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Sling-Initial-Content>SLING-CONTENT</Sling-Initial-Content>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <dependencies>
+       <dependency>
+           <groupId>org.apache.sling</groupId>
+           <artifactId>org.apache.sling.api</artifactId>
+           <version>2.4.2</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>javax.servlet</groupId>
+           <artifactId>servlet-api</artifactId>
+           <version>2.4</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.apache.felix</groupId>
+           <artifactId>org.apache.felix.scr.annotations</artifactId>
+           <version>1.9.12</version>
+           <scope>provided</scope>
+       </dependency>
+     </dependencies>
+</project>

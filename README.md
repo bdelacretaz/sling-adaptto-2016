@@ -35,8 +35,14 @@ After installing `docker-compose`, you can test it from this folder, as follows:
 If you see the _Congratulations, ..._ message it means your `docker-compose` setup works, and
 this prototype should work as well.
 
-## Sling Launchpad jar
-Before building the Sling Docker images you'll need to copy a Sling Launchpad jar at `docker/sling/org.apache.sling.launchpad.jar`. You can find one at http://sling.apache.org/downloads.cgi ("Sling Standalone Application") if you don't want to build it yourself.
+## Sling Launchpad
+The demo uses its own custom launchpad, in a Docker image that needs to be built like this:
+
+    cd slingbuild/
+    mvn clean install
+    docker build -t sling-at16 .
+	
+The `sling-at16` Docker image that this builds is used by the `docker-compose` setup later.	
 
 ## /etc/hosts setup
 To access the virtual hosts that this prototype sets up, you'll need entries like this in your /etc/hosts:
