@@ -15,6 +15,7 @@ import org.apache.felix.scr.annotations.Properties;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.metrics.MetricsService;
 import org.apache.sling.commons.metrics.Timer;
 
@@ -46,7 +47,12 @@ public class MetricsFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest)servletRequest;
 
         final Timer.Context requestTimer = metrics.timer(T_PREFIX).time();
-        final Timer.Context methodTimer = metrics.timer(T_PREFIX + "." + request.getMethod()).time();
+        String extension = "";
+        if(request instanceof SlingHttpServletRequest) {
+            extension = ((SlingHttpServletRequest)request).getRequestPathInfo().getExtension();
+        }
+        final String methodTimerName = T_PREFIX + "." + request.getMethod() + "." + extension;
+        final Timer.Context methodTimer = metrics.timer(methodTimerName).time();
 
         try {
             chain.doFilter(servletRequest, servletResponse);
