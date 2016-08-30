@@ -63,6 +63,8 @@ testing) there might be startup timing issues otherwise.
 
 So, from the `docker` folder found under this `README` file:
 
+    # Remove existing state, if any
+	docker-compose rm
 
     # build the Docker images - might Download the Web (tm) the first time it runs
 	docker-compose build
@@ -76,6 +78,30 @@ So, from the `docker` folder found under this `README` file:
 After a few seconds, tests hosts like http://alpha.example.com should be proxied to the Sling container instances.
 
 The HAProxy stats are available at http://alpha.example.com:81
+
+## Load test scenario
+The following requests can currently be used to generate load (example with the alpha.example.com test host):
+
+    $ curl -u admin:admin http://alpha.example.com/at16.txt
+    /at16 has 0 descendant nodes with an 'id' property.
+    $ curl -u admin:admin -X POST http://alpha.example.com/at16.txt
+    Added /at16/RootPostServlet/10/08/1008a470-42c8-432a-a7e3-73dd006e4497
+    $ curl -u admin:admin -X POST http://alpha.example.com/at16.txt
+    Added /at16/RootPostServlet/a4/f5/a4f5e869-9d99-4322-ba4c-0ffcc7474e1c
+    $ curl -u admin:admin -X POST http://alpha.example.com/at16.txt
+    Added /at16/RootPostServlet/e3/c1/e3c113c9-6374-48c6-b5b1-b3a42cdfb7dc
+    $ curl -u admin:admin http://alpha.example.com/at16.txt
+    /at16 has 3 descendant nodes with an 'id' property.
+    $ ab -A admin:admin -p /dev/null -n 100 http://alpha.example.com/at16.txt
+    This is ApacheBench, Version 2.3 <$Revision: 1706008 $>
+	...
+    Benchmarking alpha.example.com (be patient).....done
+    Requests per second:    74.09 [#/sec] (mean)
+	...
+    $ curl -u admin:admin http://alpha.example.com/at16.txt
+    /at16 has 103 descendant nodes with an 'id' property.
+
+Metrics are available at http://alpha.example.com/system/console/slingmetrics
 
 ## Configuring graylog
 Aggregated logs are provided by graylog at http://alpha.example.com:9000 . The initial credentials are _admin/admin_.
