@@ -44,19 +44,6 @@ The demo uses its own custom launchpad, in a Docker image that needs to be built
 	
 The `sling-at16` Docker image that this builds is used by the `docker-compose` setup later.	
 
-## /etc/hosts setup
-To access the virtual hosts that this prototype sets up, you'll need entries like this in your /etc/hosts:
-
-    192.168.99.100 alpha.example.com
-    192.168.99.100 bravo.example.com
-    192.168.99.100 charlie.example.com
-    ...
-
-matching the `SLING_DOMAIN` values defined in the `docker/docker-compose.yml` file.
-
-Replace 192.168.99.100 with the address of your Docker host if needed. `docker-machine ip default` provides
-that value if you are using `docker-machine`.
-
 ## Starting the cluster
 To start the cluster, for now it's safer to start the `mongo`, `graylog` and `etcd` containers first, as (pending more
 testing) there might be startup timing issues otherwise.
@@ -73,7 +60,7 @@ So, from the `docker` folder found under this `README` file:
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up -d mongo etcd graylog
+	docker-compose up -d mongo etcd graylog haproxy
 	
 	# wait a few seconds for those to start up, and start the first Sling instace
 	docker-compose up -d sling_001
@@ -83,35 +70,43 @@ So, from the `docker` folder found under this `README` file:
     # start the rest
 	docker-compose up -d
 
-After a few seconds, tests hosts like http://alpha.example.com should be proxied to the Sling container instances.
+After a few seconds, http://dockerhost should be proxied to the Sling container instances if `dockerhost` points to your Docker host. `docker-machine ip default` provides its address if you are using `docker-machine`.
 
-The HAProxy stats are available at http://alpha.example.com:81
+The HAProxy stats are available at http://dockerhost/haproxy/stats
 
 ## Load test scenario
 The following requests can currently be used to generate load (example with the alpha.example.com test host):
 
-    $ curl -u admin:admin http://alpha.example.com/at16.txt
+    $ curl -u admin:admin http://dockerhost/at16.txt
     /at16 has 0 descendant nodes with an 'id' property.
-    $ curl -u admin:admin -X POST http://alpha.example.com/at16.txt
+    
+    $ curl -u admin:admin -X POST http://dockerhost/at16.txt
     Added /at16/RootPostServlet/10/08/1008a470-42c8-432a-a7e3-73dd006e4497
-    $ curl -u admin:admin -X POST http://alpha.example.com/at16.txt
+    
+    $ curl -u admin:admin -X POST http://dockerhost/at16.txt
     Added /at16/RootPostServlet/a4/f5/a4f5e869-9d99-4322-ba4c-0ffcc7474e1c
-    $ curl -u admin:admin -X POST http://alpha.example.com/at16.txt
+    
+    $ curl -u admin:admin -X POST http://dockerhost/at16.txt
     Added /at16/RootPostServlet/e3/c1/e3c113c9-6374-48c6-b5b1-b3a42cdfb7dc
-    $ curl -u admin:admin http://alpha.example.com/at16.txt
+    
+    $ curl -u admin:admin http://dockerhost/at16.txt
     /at16 has 3 descendant nodes with an 'id' property.
-    $ ab -A admin:admin -p /dev/null -n 100 http://alpha.example.com/at16.txt
+    
+    $ ab -A admin:admin -p /dev/null -n 100 http://dockerhost/at16.txt
     This is ApacheBench, Version 2.3 <$Revision: 1706008 $>
 	...
     Benchmarking alpha.example.com (be patient).....done
     Requests per second:    74.09 [#/sec] (mean)
 	...
+    
     $ curl -u admin:admin http://alpha.example.com/at16.txt
     /at16 has 103 descendant nodes with an 'id' property.
 
-Metrics are available at http://alpha.example.com/system/console/slingmetrics
+Metrics are available at http://dockerhost/system/console/slingmetrics - if several Sling instances are active this will hit each a different one every time due to the `haproxy` round-robin setup.
 
 ## Configuring graylog
+*TODO update this section*
+
 Aggregated logs are provided by graylog at http://alpha.example.com:9000 . The initial credentials are _admin/admin_.
 
 To collect them you need to configure an input at http://alpha.example.com:9000/system/inputs - create an input of 
@@ -122,6 +117,8 @@ containers at regular intervals. For now these are simulated, like "Hello from d
 we'll need to connect the Sling logging subsystem to graylog using a specific Logback GELF appender.
 
 ## Adding more Sling hosts
+*TODO update this section*
+
 Copying and adapting the `sling_001` section of the `docker/docker-compose.yml` file and running `docker-compose up SSS` where
 SSS is the name of the new container should start a new Sling instance.
 
@@ -134,6 +131,8 @@ corresponding `/etc/hosts` entry.
 The logs of the new instance will also appear automatically in Graylog.
 
 ## TODO - known issues
+*TODO update this section*
+
 The internal Sling instance port numbers should be assigned dynamically. And we shouldn't need to expose them outside of
 the Docker host, this is done for debugging purposes for now.
 
