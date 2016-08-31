@@ -15,7 +15,6 @@ tools as much as possible, to concentrate on the proof of concept aspects.
 This is obviously not production-ready.
 
 ## TODO
-* There should be only only sling instance in the docker-compose file, scaled using `docker-compose scale`.
 * POSTing to `/at16.txt` is much slower when more than one Sling instance is running, about 1 second vs. 10 msec on my box. Might be related to a once-per-second event as times vary a lot.
 * Once we're happy with the setup, profile and tweak to increase overall throughput. 
 * Review the load scenario and test servlets to make sure we are exposing realistic load paths.
@@ -57,7 +56,8 @@ testing) there might be startup timing issues otherwise.
 Also, as all Sling instances are sharing the same Mongo database, for now it's safer to start one Sling instance first 
 and wait for it to be ready before starting the others, to avoid any race conditions.
 
-So, from the `docker` folder found under this `README` file:
+So, from the `docker` folder found under this `README` file (assuming `dockerhost` points to your Docker host - if
+using `docker-machine` its IP address is provided by `docker-machine ip default`):
 
     # Remove existing state, if any
 	docker-compose rm
@@ -66,17 +66,17 @@ So, from the `docker` folder found under this `README` file:
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up -d mongo etcd graylog haproxy
+	docker-compose up -d mongo etcd haproxy graylog
 	
-	# wait a few seconds for those to start up, and start the first Sling instace
-	docker-compose up -d sling_001
+	# wait for that to be ready (watch http://dockerhost/index.html)
 	
-	# wait for that to be ready (watch http://alpha.example.com)
-	
-    # start the rest
+    # start the other containers, if any
 	docker-compose up -d
+	
+	# change the number of Sling instances, if desired
+	docker-compose scale sling=3
 
-After a few seconds, http://dockerhost should be proxied to the Sling container instances if `dockerhost` points to your Docker host. `docker-machine ip default` provides its address if you are using `docker-machine`.
+After a few seconds, http://dockerhost should be proxied to the Sling container instances.
 
 The HAProxy stats are available at http://dockerhost/haproxy/stats
 

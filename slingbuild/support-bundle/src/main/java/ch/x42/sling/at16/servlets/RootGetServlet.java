@@ -14,6 +14,7 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.commons.metrics.MetricsService;
 import org.apache.sling.commons.metrics.Timer;
+import org.apache.sling.settings.SlingSettingsService;
 
 @SlingServlet(
   resourceTypes="at16/root",
@@ -25,9 +26,12 @@ import org.apache.sling.commons.metrics.Timer;
 public class RootGetServlet extends SlingSafeMethodsServlet {
 
     final static String ID = "id";
-    
+
     @Reference
     private MetricsService metrics;
+
+    @Reference
+    private SlingSettingsService settings;
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) 
@@ -45,7 +49,9 @@ public class RootGetServlet extends SlingSafeMethodsServlet {
             w.print(countChildren(request.getResource(), ID));
             w.print(" descendant nodes with an '");
             w.print(ID);
-            w.println("' property.");
+            w.print("' property. Sling instance ID is ");
+            w.print(settings.getSlingId());
+            w.println(".");
             w.flush();
         } finally {
             t.stop();

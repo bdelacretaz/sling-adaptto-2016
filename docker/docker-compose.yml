@@ -1,3 +1,7 @@
+# Dockerfile for our Sling adaptTo() 2016 demo
+# To troubleshoot, run for example
+#    docker-compose run haproxy bash
+# to get a shell on a container linked to most others
 etcd:
     image: quay.io/coreos/etcd:v0.4.6
     
@@ -23,10 +27,8 @@ graylog:
         - "12202:12202/udp"
         - "12209:12209"
 
-sling_001:
+sling:
     build: sling
-    ports:
-        - "8080:8080"
     links:
         - mongo
         - etcd
@@ -34,17 +36,4 @@ sling_001:
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
-       - SLING_DOMAIN=alpha.example.com
-
-sling_002:
-    build: sling
-    ports:
-        - "8081:8081"
-    links:
-        - mongo
-        - etcd
-        - graylog
-    environment:
-       - SLING_DB=at16
-       - SLING_PORT=8081
-       - SLING_DOMAIN=bravo.example.com
+       - SLING_DOMAIN=NODOMAIN.example.com
