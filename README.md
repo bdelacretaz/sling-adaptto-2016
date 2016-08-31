@@ -14,6 +14,12 @@ tools as much as possible, to concentrate on the proof of concept aspects.
 
 This is obviously not production-ready.
 
+## TODO
+* There should be only only sling instance in the docker-compose file, scaled using `docker-compose scale`.
+* The metrics currently show `sling:RootPostServlet` taking about 2 seconds on my box, haven't investigated so far
+* Once we're happy with the setup, profile and tweak to increase overall throughput. 
+* Review the load scenario and test servlets to make sure we are exposing realistic load paths.
+
 ## Prerequisites
 You need a Docker server and `docker-compose` setup to run this.
 
