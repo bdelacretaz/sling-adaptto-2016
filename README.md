@@ -68,6 +68,9 @@ using `docker-machine` its IP address is provided by `docker-machine ip default`
     # start the infrastructure containers	
 	docker-compose up -d mongo etcd haproxy graylog
 	
+	# start the first Sling instance
+	docker-compose scale sling=1
+
 	# wait for that to be ready (watch http://dockerhost/index.html)
 	
     # start the other containers, if any
