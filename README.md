@@ -16,7 +16,7 @@ This is obviously not production-ready.
 
 ## TODO
 * There should be only only sling instance in the docker-compose file, scaled using `docker-compose scale`.
-* The metrics currently show `sling:RootPostServlet` taking about 2 seconds on my box, haven't investigated so far
+* POSTing to `/at16.txt` is much slower when more than one Sling instance is running, about 1 second vs. 10 msec on my box. Might be related to a once-per-second event as times vary a lot.
 * Once we're happy with the setup, profile and tweak to increase overall throughput. 
 * Review the load scenario and test servlets to make sure we are exposing realistic load paths.
 
