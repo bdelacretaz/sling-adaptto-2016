@@ -8,6 +8,8 @@ COPY slingroot /opt/sling
 WORKDIR /opt/sling/
 EXPOSE 8080
 
+COPY fsroot /
+
 # We would need a unique folder name
 # for each Sling instance to do this
 # VOLUME /opt/sling/sling

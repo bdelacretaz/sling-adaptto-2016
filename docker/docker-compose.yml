@@ -37,3 +37,5 @@ sling:
        - SLING_DB=at16
        - SLING_PORT=8080
        - SLING_DOMAIN=NODOMAIN.example.com
+    volumes:
+        - /sling-volume:/sling-volume
