@@ -19,20 +19,11 @@ haproxy:
     links:
         - etcd
 
-graylog:
-    image: graylog2/allinone:latest
-    ports:
-        - "9000:9000"
-        - "12201:12201"
-        - "12202:12202/udp"
-        - "12209:12209"
-
 sling:
     build: sling
     links:
         - mongo
         - etcd
-        - graylog
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
