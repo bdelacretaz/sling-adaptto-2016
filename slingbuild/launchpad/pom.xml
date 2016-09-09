@@ -1,28 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project 
-	xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>ch.x42.at16</groupId>
-    <artifactId>launchpad</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>slingstart</packaging>
-    <name>Sling adaptoTo() 2016 Demo Launchpad</name>
-    <build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.x42.at16</groupId>
+  <artifactId>launchpad</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>slingstart</packaging>
+  <name>Sling adaptoTo() 2016 Demo Launchpad</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <docker.directory>${project.build.directory}/docker/src</docker.directory>
+  </properties>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>slingstart-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <createWebapp>false</createWebapp>
+        </configuration>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/docker</directory>
+        <targetPath>${docker.directory}</targetPath>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.sling</groupId>
-                <artifactId>slingstart-maven-plugin</artifactId>
-                <version>1.4.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <createWebapp>false</createWebapp>
-                </configuration>
-            </plugin>
+          <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.4.13</version>
+            <configuration>
+              <imageName>sling-at16</imageName>
+              <dockerDirectory>${docker.directory}</dockerDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}</directory>
+                  <include>${project.build.finalName}.jar</include>
+                </resource>
+              </resources>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build-image</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+      </build>
+    </profile>
+  </profiles>
+  
 </project>

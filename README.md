@@ -41,13 +41,13 @@ If you see the _Congratulations, ..._ message it means your `docker-compose` set
 this prototype should work as well.
 
 ## Sling Launchpad
-The demo uses its own custom launchpad, in a Docker image that needs to be built like this:
+The demo uses its own custom launchpad, in a Docker image that's built (by default, using a Maven profile)
+as part of the Maven build.
 
-    cd slingbuild/
+    cd slingbuild
     mvn clean install
-    docker build -t sling-at16 .
 	
-The `sling-at16` Docker image that this builds is used by the `docker-compose` setup later.	
+This creates the `sling-at16` Docker image that runs the custom Sling launchpad defined in that module.
 
 ## Starting the cluster
 To start the cluster, for now it's safer to start the `mongo`, `graylog` and `etcd` containers first, as (pending more
