@@ -2,14 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.x42.at16</groupId>
-  <artifactId>launchpad</artifactId>
+  <artifactId>parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>slingstart</packaging>
-  <name>Sling adaptoTo() 2016 Demo Launchpad</name>
+  <packaging>pom</packaging>
+  <name>Sling adaptoTo() 2016 Docker Images Parent POM</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <docker.directory>${project.build.directory}/docker/src</docker.directory>
+    <image.name>${project.groupId}.${project.artifactId}</image.name>
   </properties>
   
   <build>
@@ -46,7 +47,7 @@
             <artifactId>docker-maven-plugin</artifactId>
             <version>0.4.13</version>
             <configuration>
-              <imageName>sling-at16</imageName>
+              <imageName>${image.name}</imageName>
               <dockerDirectory>${docker.directory}</dockerDirectory>
               <resources>
                 <resource>

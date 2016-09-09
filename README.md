@@ -40,24 +40,12 @@ After installing `docker-compose`, you can test it from this folder, as follows:
 If you see the _Congratulations, ..._ message it means your `docker-compose` setup works, and
 this prototype should work as well.
 
-## Sling Launchpad
-The demo uses its own custom launchpad, in a Docker image that's built (by default, using a Maven profile)
-as part of the Maven build.
-
-    cd slingbuild
-    mvn clean install
-	
-This creates the `sling-at16` Docker image that runs the custom Sling launchpad defined in that module.
+## Sling Docker Images
+To build the required OSGi bundles and Sling Docker images, run `mvn clean install` from this folder.
 
 ## Starting the cluster
-To start the cluster, for now it's safer to start the `mongo`, `graylog` and `etcd` containers first, as (pending more
-testing) there might be startup timing issues otherwise.
-
-Also, as all Sling instances are sharing the same Mongo database, for now it's safer to start one Sling instance first 
-and wait for it to be ready before starting the others, to avoid any race conditions.
-
-So, from the `docker` folder found under this `README` file (assuming `dockerhost` points to your Docker host - if
-using `docker-machine` its IP address is provided by `docker-machine ip default`):
+To start the cluster, build the required Docker images as shown above and then, from the `docker` 
+folder found under this `README` file , assuming `dockerhost` points to your Docker host:
 
     # Remove existing state, if any
 	docker-compose rm
@@ -65,19 +53,11 @@ using `docker-machine` its IP address is provided by `docker-machine ip default`
     # build the Docker images - might Download the Web (tm) the first time it runs
 	docker-compose build
 
-    # start the infrastructure containers	
-	docker-compose up -d mongo etcd haproxy graylog
-	
-	# start the first Sling instance
-	docker-compose scale sling=1
-
-	# wait for that to be ready (watch http://dockerhost/index.html)
-	
-    # start the other containers, if any
+    # start the containers	
 	docker-compose up -d
-	
-	# change the number of Sling instances, if desired
-	docker-compose scale sling=3
+
+Later you can scale up the various containers using `docker-compose scale`, if desired.	See
+the comments in the `docker-compose.yml` file for which ones make sense to scale.
 
 After a few seconds, http://dockerhost should be proxied to the Sling container instances.
 

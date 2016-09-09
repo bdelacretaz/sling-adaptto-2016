@@ -1,4 +1,4 @@
-FROM sling-at16:latest
+FROM ch.x42.at16.resolver:latest
 MAINTAINER bdelacretaz@apache.org
 
 COPY slingroot /opt/sling
