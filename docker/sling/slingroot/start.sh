@@ -6,6 +6,8 @@ echo Starting Sling in `pwd`
 echo JAVA_OPTS=$JAVA_OPTS
 echo SLING_OPTS=$SLING_OPTS
 
-/bin/bash ./announce.sh
-
-java $JAVA_OPTS -jar launchpad.jar $SLING_OPTS
+# Wait for required services, announce Sling instance to etcd and start Sling
+/bin/bash ./wait-for-it.sh etcd:4001 \
+&& /bin/bash ./wait-for-it.sh mongo:27017 \
+&& /bin/bash ./announce.sh \
+&& java $JAVA_OPTS -jar launchpad.jar $SLING_OPTS
