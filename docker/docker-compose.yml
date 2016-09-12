@@ -14,14 +14,26 @@ services:
   mongo:
     image: mongo:3.0
 
-  haproxy:
+  # HTTP front-end, load balances the resolvers
+  frontend:
     build: haproxy
     depends_on:
       - etcd
     ports:
         - "80:80"
-        - "81:81"
+    environment:
+        - SLING_ROLE_REGEXP=frontend.*
 
+  # HTTP back-end, load balances the workers
+  backend:
+    build: haproxy
+    depends_on:
+      - etcd
+    ports:
+        - "81:80"
+    environment:
+        - SLING_ROLE_REGEXP=backend.*
+ 
   resolver:
     image: ch.x42.at16.resolver:latest
     depends_on:
@@ -30,4 +42,15 @@ services:
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
-       - SLING_ROLE=resolver
+       - SLING_ROLE=frontend.resolver
+
+  # Fake worker for now, to test HTTP routing
+  worker:
+    image: ch.x42.at16.resolver:latest
+    depends_on:
+      - etcd
+      - mongo
+    environment:
+       - SLING_DB=at16
+       - SLING_PORT=8080
+       - SLING_ROLE=backend.fake
