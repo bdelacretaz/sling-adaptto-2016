@@ -6,6 +6,7 @@ RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y nano && \
     apt-get install -y procps && \
+    apt-get install -y inotify-tools && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CONFD_MD5=1bc02600fa2dc33f9cdaf7b1fd189cfd
