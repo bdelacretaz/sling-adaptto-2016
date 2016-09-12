@@ -30,4 +30,4 @@ services:
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
-       - SLING_DOMAIN=NODOMAIN.example.com
+       - SLING_ROLE=MISSING_ROLE

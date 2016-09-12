@@ -1,4 +1,4 @@
 {{range gets "/sling/instances/*"}}
 {{$data := json .Value}}
-{{ $data.domain }}#{{ $data.ip }}#{{ $data.port }}#{{base .Key}}
+{{ $data.role }}#{{ $data.ip }}#{{ $data.port }}#{{base .Key}}
 {{end}}
