@@ -22,12 +22,12 @@ services:
         - "80:80"
         - "81:81"
 
-  sling:
-    build: sling
+  resolver:
+    image: ch.x42.at16.resolver:latest
     depends_on:
       - etcd
       - mongo
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
-       - SLING_ROLE=MISSING_ROLE
+       - SLING_ROLE=resolver

@@ -19,7 +19,7 @@ function generate_config() {
 	  # $1:role, $2:IP, $3:port
 	  set $(echo $i | tr ':' ' ')
 	  # TODO health check info should be provided by Sling backend
-	  echo "    server sling_$2:$3 $2:$3 check"
+	  echo "    server sling-$1-$2:$3 $2:$3 check"
 	  echo
 	done
 }
