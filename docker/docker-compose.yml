@@ -36,7 +36,7 @@ services:
 
   # Fake worker for now, to test HTTP routing
   fakeworker:
-    image: ch.x42.at16.resolver:latest
+    image: ch.x42.at16.default-worker:latest
     depends_on:
       - etcd
       - mongo
@@ -47,7 +47,7 @@ services:
 
   # Another fake worker
   dummyworker:
-    image: ch.x42.at16.resolver:latest
+    image: ch.x42.at16.default-worker:latest
     depends_on:
       - etcd
       - mongo

@@ -159,8 +159,8 @@ public class ProxyScriptEngine extends AbstractSlingScriptEngine {
             }
             
         };
- 
-        log.info("Proxying to {} with additional headers {}", proxyUrl, additionalHeaders);
+        
+        request.getRequestProgressTracker().log("Proxying to {0} with additional headers {1}", proxyUrl, additionalHeaders);
         
         final URL targetURL = new URL(proxyUrl);
         final HttpHost host = new HttpHost(targetURL.getHost(), targetURL.getPort());

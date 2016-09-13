@@ -1,4 +1,4 @@
-# Sling provisioning model for the adaptTo 2016 demo launchpad
+# Sling provisioning model for the adaptTo 2016 resolver instance
 [feature name=sling]
 [artifacts]
   org.apache.sling/org.apache.sling.launchpad/8/slingstart
@@ -7,8 +7,17 @@
   org.apache.sling/org.apache.sling.commons.metrics/1.0.0
   io.dropwizard.metrics/metrics-core/3.1.2
   
-  # Demo support bundle
+  # Demo support bundles
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
+  ch.x42.at16/proxy-resolver/0.0.1-SNAPSHOT
 
-# TODO  	  
 [configurations]
+  ch.x42.sling.at16.proxyresolver.impl.ProxyScriptEngineFactory
+    proxy.url="http://haproxy:81"
+    http.headers.format="Sling-Worker-Role:{0}"
+
+  org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl
+    resource.resolver.searchpath=["/sling/proxy","/apps","/libs"]
+
+  org.apache.sling.servlets.resolver.SlingServletResolver
+    servletresolver.cacheSize=I"0"

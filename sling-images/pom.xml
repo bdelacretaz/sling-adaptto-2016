@@ -11,6 +11,7 @@
     <name>Sling adaptoTo() 2016 Demo Reactor</name>
     <modules>
       <module>images/resolver</module>
+      <module>images/default-worker</module>
       <module>images/base</module>
       <module>bundles/support-bundle</module>
       <module>bundles/metrics-es-reporter</module>
