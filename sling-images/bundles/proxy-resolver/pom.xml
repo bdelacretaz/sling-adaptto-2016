@@ -71,11 +71,6 @@
                 <artifactId>maven-bundle-plugin</artifactId>
 				<version>3.0.1</version>
                 <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-Activator>ch.x42.sling.at16.proxyresolver.impl.Activator</Bundle-Activator>
-                    </instructions>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -97,6 +92,12 @@
        </dependency>
        <dependency>
            <groupId>org.apache.sling</groupId>
+           <artifactId>org.apache.sling.scripting.api</artifactId>
+           <version>2.1.8</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.apache.sling</groupId>
            <artifactId>org.apache.sling.commons.osgi</artifactId>
            <version>2.2.0</version>
            <scope>provided</scope>
@@ -106,6 +107,18 @@
            <artifactId>org.apache.sling.scripting.core</artifactId>
            <version>2.0.10</version>
            <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.apache.httpcomponents</groupId>
+           <artifactId>httpclient</artifactId>
+           <version>4.2.5</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>1.4</version>
+         <scope>provided</scope>
        </dependency>
        <dependency>
            <groupId>javax.servlet</groupId>
