@@ -34,8 +34,7 @@ services:
        - SLING_PORT=8080
        - SLING_ROLE=resolver
 
-  # Fake worker for now, to test HTTP routing
-  fakeworker:
+  defaultworker:
     image: ch.x42.at16.default-worker:latest
     depends_on:
       - etcd
@@ -43,9 +42,9 @@ services:
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
-       - SLING_ROLE=fakeworker
+       - SLING_ROLE=default
 
-  # Another fake worker
+  # Fake worker, to have two of them for now
   dummyworker:
     image: ch.x42.at16.default-worker:latest
     depends_on:

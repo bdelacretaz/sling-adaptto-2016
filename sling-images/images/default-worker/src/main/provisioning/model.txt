@@ -9,6 +9,7 @@
   
   # Demo support bundle
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
+  ch.x42.at16/instance-info-filter/0.0.1-SNAPSHOT
 
 # TODO  	  
 [configurations]

@@ -10,10 +10,13 @@
   # Demo support bundles
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
   ch.x42.at16/proxy-resolver/0.0.1-SNAPSHOT
+  ch.x42.at16/instance-info-filter/0.0.1-SNAPSHOT
 
 [configurations]
-  ch.x42.sling.at16.proxyresolver.impl.ProxyScriptEngineFactory
+  ch.x42.sling.at16.proxyresolver.impl.HttpProxyImpl
     proxy.url="http://haproxy:81"
+
+  ch.x42.sling.at16.proxyresolver.impl.WorkerProxyImpl
     http.headers.format="Sling-Worker-Role:{0}"
 
   org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl
