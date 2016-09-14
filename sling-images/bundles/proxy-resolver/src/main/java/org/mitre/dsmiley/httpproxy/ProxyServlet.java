@@ -16,6 +16,25 @@
 
 package org.mitre.dsmiley.httpproxy;
 
+import java.io.ByteArrayInputStream;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Constructor;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.util.BitSet;
+import java.util.Enumeration;
+import java.util.Formatter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -26,7 +45,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.AbortableHttpRequest;
 import org.apache.http.client.params.ClientPNames;
-import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.entity.InputStreamEntity;
@@ -37,24 +55,9 @@ import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.message.HeaderGroup;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.net.HttpCookie;
-import java.net.URI;
-import java.util.BitSet;
-import java.util.Enumeration;
-import java.util.Formatter;
-import java.util.List;
 
 /**
  * This code was copied and slightly adapted from https://github.com/mitre/HTTP-Proxy-Servlet, under Apache License.
@@ -322,8 +325,25 @@ public class ProxyServlet extends HttpServlet {
             new BasicHttpEntityEnclosingRequest(method, proxyRequestUri);
     // Add the input entity (streamed)
     //  note: we don't bother ensuring we close the servletInputStream since the container handles it
+
+    // TODO: HACK ALERT!!
+    // Without this trick, requests to a Sling backend get stuck
+    // as the input stream is empty when doing a POST request.
+    // This is similar to https://github.com/chang-chao/HTTP-Proxy-Servlet/commit/9acc48ff370558e57e5d101858a5556453c45646
+    // but that didn't help in our case
+    InputStream is = servletRequest.getInputStream();
+    if(is.available() == 0) {
+        final int length = servletRequest.getContentLength();
+        final byte [] data = new byte[length];
+        for(int i=0 ; i< length ; i++) {
+            data[i] = 0;
+        }
+        is = new ByteArrayInputStream(data);
+    }
+    // HACK ALERT ENDS
+
     eProxyRequest.setEntity(
-            new InputStreamEntity(servletRequest.getInputStream(), getContentLength(servletRequest)));
+            new InputStreamEntity(is, getContentLength(servletRequest)));
     eProxyRequest.expectContinue();
     return eProxyRequest;
   }
