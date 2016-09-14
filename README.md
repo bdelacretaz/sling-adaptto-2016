@@ -48,12 +48,27 @@ To start the cluster, build the required Docker images as shown above and then, 
 folder found under this `README` file , assuming `dockerhost` points to your Docker host:
 
     # Remove existing state, if any
+    docker-compose kill
 	docker-compose rm
+	
+	# IF DESIRED cleanup all your Docker state
+	# (including ALL OTHER volumes and containers)
+	docker volume rm $(docker volume ls -q)
+	docker rm $(docker ps -q -a)
 
     # build the Docker images - might Download the Web (tm) the first time it runs
 	docker-compose build
 
-    # start the containers	
+    # start the infrastructure containers	
+	docker-compose up -d etcd mongo haproxy
+	
+	# start the first Sling instance, which creates initial content
+	docker-compose up -d resolver
+	
+	# Wait for http://dockerhost/ to show the Sling launchpad page
+	# See also http://dockerhost/haproxy/stats for HTTP routing
+	
+	# start the remaining containers
 	docker-compose up -d
 
 Later you can scale up the various containers using `docker-compose scale`, if desired.	See
