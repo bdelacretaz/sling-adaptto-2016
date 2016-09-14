@@ -109,10 +109,7 @@ public class WorkerProxyImpl implements WorkerProxy {
             
         };
         
-        final String msg = MessageFormat.format("Proxying via {0} with additional headers {1}", httpProxy, additionalHeaders);
-        log.info(msg);
-        request.getRequestProgressTracker().log(msg);
-        
+        U.logAndRequestProgress(request, log, "Proxying via {0} with additional headers {1}", httpProxy, additionalHeaders);
         httpProxy.proxy(wrappedRequest, response);
     }
 }

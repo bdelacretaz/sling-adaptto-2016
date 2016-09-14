@@ -28,11 +28,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.scripting.api.AbstractSlingScriptEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ch.x42.sling.at16.proxyresolver.WorkerProxy;
 
 /** Proxy the current request based on the worker role defined by our script */
 public class ProxyScriptEngine extends AbstractSlingScriptEngine {
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final WorkerProxy workerProxy;
     
     ProxyScriptEngine(ScriptEngineFactory factory, WorkerProxy workerProxy) {
@@ -47,7 +50,7 @@ public class ProxyScriptEngine extends AbstractSlingScriptEngine {
             final String workerRole = IOUtils.toString(reader).trim();
             final SlingHttpServletRequest request = getContext(context, "request", SlingHttpServletRequest.class); 
             final SlingHttpServletResponse response = getContext(context, "response", SlingHttpServletResponse.class);
-            request.getRequestProgressTracker().log("Got role {0} from proxy script", workerRole);
+            U.logAndRequestProgress(request, log, "Got role {0} from proxy script", workerRole);
             workerProxy.proxy(request, response, workerRole);
         } catch (Exception e) {
             final ScriptException se = new ScriptException("Proxy setup or execution failed");
@@ -78,30 +81,4 @@ public class ProxyScriptEngine extends AbstractSlingScriptEngine {
         
         return (T)o;
     }
-    
-    /* TODO move this to our default servlet
-    private String resolveWorkerRole(Resource r) {
-        if(r == null) {
-            return DEFAULT_ROLE;
-        }
-        
-        String role = DEFAULT_ROLE;
-        
-        
-        // Find a role property on r or its ancestors
-        // TODO cache this?
-        final ValueMap m = r.adaptTo(ValueMap.class);
-        if(m != null) {
-            final String resourceRole = m.get(ROLE_PROPERTY, String.class);
-            if(resourceRole != null) {
-                role = resourceRole;
-                log.debug("Resource {} has {}, role set to {}", new Object [] { r.getPath(), ROLE_PROPERTY, role });
-            } else {
-                role = resolveWorkerRole(r.getParent());
-            }
-        }
-        
-        return role;
-    }
-    */
 }
