@@ -26,6 +26,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.AbortableHttpRequest;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.entity.InputStreamEntity;
@@ -145,6 +146,7 @@ public class ProxyServlet extends HttpServlet {
     HttpParams hcParams = new BasicHttpParams();
     hcParams.setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.IGNORE_COOKIES);
     hcParams.setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false); // See #70
+    hcParams.setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
     readConfigParam(hcParams, ClientPNames.HANDLE_REDIRECTS, Boolean.class);
     proxyClient = createHttpClient(hcParams);
   }
@@ -322,6 +324,7 @@ public class ProxyServlet extends HttpServlet {
     //  note: we don't bother ensuring we close the servletInputStream since the container handles it
     eProxyRequest.setEntity(
             new InputStreamEntity(servletRequest.getInputStream(), getContentLength(servletRequest)));
+    eProxyRequest.expectContinue();
     return eProxyRequest;
   }
 

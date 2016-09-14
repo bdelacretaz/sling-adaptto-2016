@@ -46,7 +46,7 @@ import ch.x42.sling.at16.proxyresolver.WorkerProxy;
 @SuppressWarnings("serial")
 @SlingServlet(
         resourceTypes="sling/servlet/default",
-        methods={ "GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS "})
+        methods={ "GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "MKCOL", "PROPFIND" })
 public class DefaultServlet extends SlingAllMethodsServlet {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

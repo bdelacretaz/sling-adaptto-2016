@@ -71,6 +71,16 @@
                 <artifactId>maven-bundle-plugin</artifactId>
 				<version>3.0.1</version>
                 <extensions>true</extensions>
+                <configuration>
+                  <instructions>
+                    <Embed-Dependency>groupId=org.apache.httpcomponents,commons-logging,commons-codec</Embed-Dependency>
+                    <Import-Package>
+                        !org.apache.avalon.framework.logger,
+                        !org.apache.log,
+                        *
+                    </Import-Package>
+                  </instructions>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -111,8 +121,26 @@
        <dependency>
            <groupId>org.apache.httpcomponents</groupId>
            <artifactId>httpclient</artifactId>
-           <version>4.2.5</version>
+           <version>4.5.2</version>
            <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.apache.httpcomponents</groupId>
+           <artifactId>httpcore</artifactId>
+           <version>4.4.5</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+         <groupId>commons-logging</groupId>
+         <artifactId>commons-logging</artifactId>
+         <version>1.2</version>
+         <scope>provided</scope>
+       </dependency>
+       <dependency>
+         <groupId>commons-codec</groupId>
+         <artifactId>commons-codec</artifactId>
+         <version>1.9</version>
+         <scope>provided</scope>
        </dependency>
        <dependency>
          <groupId>commons-io</groupId>
