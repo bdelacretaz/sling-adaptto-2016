@@ -82,7 +82,7 @@ public class DefaultServlet extends SlingAllMethodsServlet {
             U.logAndRequestProgress(request, log, "Worker role {0} set by default for {1}", workerRole, r.getPath());
         }
         
-        U.logAndRequestProgress(request, log, "No proxy script for current request to {0}, proxying to {1}", r.getPath(), workerRole);
+        U.logAndRequestProgress(request, log, "No worker script for current request to {0}, worker role set to {1}", r.getPath(), workerRole);
         U.outputRole(response, workerRole);
     }
     

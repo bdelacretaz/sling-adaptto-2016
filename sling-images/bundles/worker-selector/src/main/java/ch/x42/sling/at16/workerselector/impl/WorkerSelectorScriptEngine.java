@@ -46,10 +46,10 @@ public class WorkerSelectorScriptEngine extends AbstractSlingScriptEngine {
             final String workerRole = IOUtils.toString(reader).trim();
             final SlingHttpServletRequest request = getContext(context, "request", SlingHttpServletRequest.class); 
             final SlingHttpServletResponse response = getContext(context, "response", SlingHttpServletResponse.class);
-            U.logAndRequestProgress(request, log, "Got role {0} from proxy script", workerRole);
+            U.logAndRequestProgress(request, log, "Got role {0} from worker script", workerRole);
             U.outputRole(response, workerRole);
         } catch (Exception e) {
-            final ScriptException se = new ScriptException("Proxy setup or execution failed");
+            final ScriptException se = new ScriptException("Worker role resolution setup or execution failed");
             se.initCause(e);
             throw se;
         }
