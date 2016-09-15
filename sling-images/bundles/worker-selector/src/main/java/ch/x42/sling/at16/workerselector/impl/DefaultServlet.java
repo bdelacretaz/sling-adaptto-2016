@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.proxyresolver.impl;
+package ch.x42.sling.at16.workerselector.impl;
 
 import java.io.IOException;
 import java.util.Map;
@@ -25,7 +25,6 @@ import javax.servlet.ServletException;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -36,9 +35,7 @@ import org.apache.sling.commons.osgi.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.x42.sling.at16.proxyresolver.WorkerProxy;
-
-/** Servlet that handles requests for which a specific proxy
+/** Servlet that handles requests for which a specific worker
  *  role script is not found. Looks at the resource and resource
  *  type and supertype to see if a role is defined, and if not 
  *  falls back to a default role. 
@@ -58,9 +55,6 @@ public class DefaultServlet extends SlingAllMethodsServlet {
     @Property(value=DEFAULT_ROLE_VALUE)
     public static final String PROP_DEFAULT_ROLE = "default.role";
     private String defaultRole;
-    
-    @Reference
-    private WorkerProxy workerProxy;
     
     @Activate
     protected void activate(Map<String, Object> config) throws ServletException {
@@ -89,7 +83,7 @@ public class DefaultServlet extends SlingAllMethodsServlet {
         }
         
         U.logAndRequestProgress(request, log, "No proxy script for current request to {0}, proxying to {1}", r.getPath(), workerRole);
-        workerProxy.proxy(request, response, workerRole);
+        U.outputRole(response, workerRole);
     }
     
     /** Find worker role property on the resource itself, or its ancestors.

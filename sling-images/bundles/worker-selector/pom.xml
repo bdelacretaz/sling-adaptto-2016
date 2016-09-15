@@ -31,10 +31,10 @@
     </parent>
     
     <groupId>ch.x42.at16</groupId>
-    <artifactId>proxy-resolver</artifactId>
+    <artifactId>worker-selector</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>Sling adaptoTo() 2016 Proxy Resolver</name>
+    <name>Sling adaptoTo() 2016 Worker Selector</name>
 	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

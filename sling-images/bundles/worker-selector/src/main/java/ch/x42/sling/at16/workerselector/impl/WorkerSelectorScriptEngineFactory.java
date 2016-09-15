@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.proxyresolver.impl;
+package ch.x42.sling.at16.workerselector.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +25,18 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 
 import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.scripting.api.AbstractScriptEngineFactory;
 
-import ch.x42.sling.at16.proxyresolver.WorkerProxy;
-
-/** Proxy the current request based on the role defined by our proxy "script" */
+/** Output a worker role selector based on .worker scripts */
 @Component
 @Service(ScriptEngineFactory.class)
-public class ProxyScriptEngineFactory extends AbstractScriptEngineFactory {
+public class WorkerSelectorScriptEngineFactory extends AbstractScriptEngineFactory {
     public static final List<String> EXTENSIONS = new ArrayList<String>();
     
     static {
-        EXTENSIONS.add("proxy");
+        EXTENSIONS.add("worker");
     }
-    
-    @Reference
-    private WorkerProxy workerProxy;
     
     @Override
     public String getLanguageName() {
@@ -56,7 +50,7 @@ public class ProxyScriptEngineFactory extends AbstractScriptEngineFactory {
 
     @Override
     public ScriptEngine getScriptEngine() {
-        return new ProxyScriptEngine(this, workerProxy);
+        return new WorkerSelectorScriptEngine(this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-# Sling provisioning model for the adaptTo 2016 resolver instance
+# Sling provisioning model for the adaptTo 2016 worker selector instance
 [feature name=sling]
 [artifacts]
   org.apache.sling/org.apache.sling.launchpad/8/slingstart
@@ -8,19 +8,12 @@
   io.dropwizard.metrics/metrics-core/3.1.2
   
   # Demo support bundles
-  ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
-  ch.x42.at16/proxy-resolver/0.0.1-SNAPSHOT
+  ch.x42.at16/worker-selector/0.0.1-SNAPSHOT
   ch.x42.at16/instance-info-filter/0.0.1-SNAPSHOT
 
 [configurations]
-  ch.x42.sling.at16.proxyresolver.impl.HttpProxyImpl
-    proxy.url="http://haproxy:81"
-
-  ch.x42.sling.at16.proxyresolver.impl.WorkerProxyImpl
-    http.headers.format="Sling-Worker-Role:{0}"
-
   org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl
-    resource.resolver.searchpath=["/sling/proxy","/apps","/libs"]
+    resource.resolver.searchpath=["/workerdefs","/apps","/libs"]
 
   org.apache.sling.servlets.resolver.SlingServletResolver
     servletresolver.cacheSize=I"0"

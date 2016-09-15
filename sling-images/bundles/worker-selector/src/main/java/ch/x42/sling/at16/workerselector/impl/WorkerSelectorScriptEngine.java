@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.proxyresolver.impl;
+package ch.x42.sling.at16.workerselector.impl;
 
 import java.io.Reader;
 
@@ -31,16 +31,12 @@ import org.apache.sling.scripting.api.AbstractSlingScriptEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.x42.sling.at16.proxyresolver.WorkerProxy;
-
-/** Proxy the current request based on the worker role defined by our script */
-public class ProxyScriptEngine extends AbstractSlingScriptEngine {
+/** Output a worker role selector based on .worker scripts */
+public class WorkerSelectorScriptEngine extends AbstractSlingScriptEngine {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final WorkerProxy workerProxy;
     
-    ProxyScriptEngine(ScriptEngineFactory factory, WorkerProxy workerProxy) {
+    WorkerSelectorScriptEngine(ScriptEngineFactory factory) {
         super(factory);
-        this.workerProxy = workerProxy;
     }
     
     @Override
@@ -51,7 +47,7 @@ public class ProxyScriptEngine extends AbstractSlingScriptEngine {
             final SlingHttpServletRequest request = getContext(context, "request", SlingHttpServletRequest.class); 
             final SlingHttpServletResponse response = getContext(context, "response", SlingHttpServletResponse.class);
             U.logAndRequestProgress(request, log, "Got role {0} from proxy script", workerRole);
-            workerProxy.proxy(request, response, workerRole);
+            U.outputRole(response, workerRole);
         } catch (Exception e) {
             final ScriptException se = new ScriptException("Proxy setup or execution failed");
             se.initCause(e);

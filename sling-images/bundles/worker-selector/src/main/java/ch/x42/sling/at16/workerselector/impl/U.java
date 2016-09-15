@@ -16,14 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.proxyresolver;
+package ch.x42.sling.at16.workerselector.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/** Proxy HTTP requests */
-public interface HttpProxy {
-    void proxy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.slf4j.Logger;
+
+/** General utilities */ 
+class U {
+    static void logAndRequestProgress(SlingHttpServletRequest request, Logger log, String format, Object ... arguments) {
+        final String msg = MessageFormat.format(format, arguments);
+        request.getRequestProgressTracker().log(msg);
+        log.info(msg);
+    }
+    
+    static void outputRole(HttpServletResponse response, String role) throws IOException {
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(role);
+        response.getWriter().write("\n");
+        response.getWriter().flush();
+    }
 }
