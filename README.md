@@ -78,6 +78,45 @@ After a few seconds, http://dockerhost should be proxied to the Sling container 
 
 The HAProxy stats are available at http://dockerhost/haproxy/stats
 
+## Routing test scenario
+The following commands demonstrate the content-driven dynamic routing:
+
+Create some content, with a .worker script that specifies the use of 
+a backend worker with the 'fake' role for JSON rendering:
+
+    export H=localhost
+	curl -u admin:admin -Fsling:resourceType=test http://${H}/tmp/test
+    curl -D - -u admin:admin -X MKCOL http://${H}/workerdefs/test
+    export W=fake
+    echo $W > /tmp/1 && curl -u admin:admin -T /tmp/1 http://${H}/workerdefs/test/json.worker
+	
+Note the `Sling-Instance-Info` header in the response to this request:
+
+    curl -D - http://${H}/tmp/test.tidy.json
+	
+	...
+	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fake"
+	...
+	
+Requesting the same node with an `html` extension uses the `default` worker role, as it doesn't have a specific
+`.worker` script:
+
+    curl -D - http://${H}/tmp/test.html
+	
+    ...
+	Sling-Instance-Info: SlingId:077141a0-63c0-4ab8-b5a4-b33782326000; sling.environment.info:"sling-role:default"	
+	...
+	
+And setting `sling:workerRole` property in the content also defines a worker role, either on the resource or
+its ancestors:
+
+    curl -u admin:admin -F sling:workerRole=fake http://${H}/tmp
+	
+	curl -D - http://${H}/tmp/test.html
+	...
+	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fake"
+	...	
+
 ## Load test scenario
 The following requests can currently be used to generate load (example with the alpha.example.com test host):
 
