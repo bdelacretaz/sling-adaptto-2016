@@ -8,7 +8,7 @@ function remap(r)
   -- our config, generated from the container environment
   require("dyndis.config")
   
-  -- get w via HTTP
+  -- get role via HTTP
   selectorUrl = DYNDIS_WORKER_SELECTOR_URL .. r.uri
   p = require "socket.http".request(selectorUrl)
   if p==nil
@@ -33,7 +33,6 @@ function remap(r)
 	)
   
   -- forward to mod_proxy with additional header
-  -- using echo service so that we see the results
   r.handler = "proxy-server"
   r.proxyreq = apache2.PROXYREQ_REVERSE
   r.headers_in[DYNDIS_ADD_HEADER_NAME] = role
