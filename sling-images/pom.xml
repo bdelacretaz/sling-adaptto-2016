@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <name>Sling adaptoTo() 2016 Demo Reactor</name>
     <modules>
+      <module>parent</module>
       <module>images/worker-selector</module>
       <module>images/default-worker</module>
       <module>images/base</module>

@@ -38,7 +38,9 @@
     <profile>
       <id>docker</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <file>
+          <exists>${basedir}/src/main/docker</exists>
+        </file>
       </activation>
       <build>
         <plugins>
