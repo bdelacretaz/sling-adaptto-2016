@@ -86,6 +86,7 @@ a backend worker with the 'fake' role for JSON rendering:
 
     export H=localhost
 	curl -u admin:admin -Fsling:resourceType=test http://${H}/tmp/test
+	curl -D - -u admin:admin -X MKCOL http://${H}/workerdefs
     curl -D - -u admin:admin -X MKCOL http://${H}/workerdefs/test
     export W=fake
     echo $W > /tmp/1 && curl -u admin:admin -T /tmp/1 http://${H}/workerdefs/test/json.worker
