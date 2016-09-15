@@ -14,6 +14,10 @@ services:
   mongo:
     image: mongo:3.0
 
+    # open the port to make it easier to test our Sling builds
+    ports:
+        - "27017:27017"
+
   haproxy:
     build: haproxy
     depends_on:
