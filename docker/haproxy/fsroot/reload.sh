@@ -55,7 +55,8 @@ function generate_config() {
 	echo "# Sling worker instances, selected by a Sling-Worker-Role header"
     echo "frontend workers_81"
 	echo "  bind 0.0.0.0:81"
-	echo "  default_backend worker_default_backend"
+	echo "  # TODO default backend role should be provided by environment"
+	echo "  default_backend default_worker_loadbalancer"
 	
     # ACLs and backends for per-role routing
 	ROLES=$(grep -v '^ *$' < $IN | awk -F# '{ print $1}' | sort | egrep -v ${SLING_FRONTEND_ROLE_REGEXP})

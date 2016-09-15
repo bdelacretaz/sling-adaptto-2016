@@ -22,17 +22,18 @@ services:
         - "80:80"
         - "81:81"
     environment:
-        - SLING_FRONTEND_ROLE_REGEXP=resolver
+        - SLING_FRONTEND_ROLE_REGEXP=dyndis
 
-  resolver:
-    image: ch.x42.at16.resolver:latest
+  dyndis:
+    build: dyndis
     depends_on:
       - etcd
-      - mongo
+    ports:
+        - "8000:80"
     environment:
-       - SLING_DB=at16
-       - SLING_PORT=8080
-       - SLING_ROLE=resolver
+       - SLING_PORT=80
+       - DYNDIS_PROXY_TO_URL=http://haproxy:81
+       - DYNDIS_ADD_HEADER_NAME=Sling-Worker-Role
 
   defaultworker:
     image: ch.x42.at16.default-worker:latest
@@ -45,7 +46,9 @@ services:
        - SLING_ROLE=default
 
   # Fake worker, to have two of them for now
-  dummyworker:
+  # the "panique" role is returned from www.perdu.com for
+  # the current tests...it's complicated ;-)
+  panique:
     image: ch.x42.at16.default-worker:latest
     depends_on:
       - etcd
@@ -53,4 +56,4 @@ services:
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
-       - SLING_ROLE=dummyworker
+       - SLING_ROLE=panique
