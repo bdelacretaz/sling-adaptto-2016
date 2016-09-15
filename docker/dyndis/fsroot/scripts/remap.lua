@@ -10,7 +10,9 @@ function remap(r)
   
   -- get role via HTTP
   selectorUrl = DYNDIS_WORKER_SELECTOR_URL .. r.uri
-  p = require "socket.http".request(selectorUrl)
+  local t = {}
+  require "socket.http".request{ url=selectorUrl, method=r.method, sink=ltn12.sink.table(t) }
+  p = table.concat(t)
   if p==nil
   then
 	error("No content returned from worker selector " .. DYNDIS_WORKER_SELECTOR_URL)
@@ -27,6 +29,7 @@ function remap(r)
     .. " returned role " 
 	.. role 
 	.. ", proxying to "
+        .. r.method .. " "
 	.. DYNDIS_PROXY_TO_URL
 	.. " with header " 
 	.. DYNDIS_ADD_HEADER_NAME .. "=" .. role
