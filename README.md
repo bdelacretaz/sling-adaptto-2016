@@ -60,23 +60,25 @@ folder found under this `README` file , assuming `dockerhost` points to your Doc
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up -d etcd mongo haproxy
+	docker-compose up -d etcd mongo haproxy dyndis
 	
 	# start the first Sling instance, which creates initial content
-	docker-compose up -d resolver
+	docker-compose up -d default
 	
-	# Wait for http://dockerhost/ to show the Sling launchpad page
-	# See also http://dockerhost/haproxy/stats for HTTP routing
+	# Wait for http://dockerhost:81/ to show the Sling launchpad page
+	# See also http://dockerhost/haproxy/stats for HTTP routing stats
 	
 	# start the remaining containers
 	docker-compose up -d
+	
+After a few seconds http://dockerhost should show the Sling homepage, and the below routing
+test scenario should work.
+
+If things go wrong you can use `docker-compose logs S` where S is the name of a service
+as defines in the `docker-compose.yml` file.
 
 Later you can scale up the various containers using `docker-compose scale`, if desired.	See
 the comments in the `docker-compose.yml` file for which ones make sense to scale.
-
-After a few seconds, http://dockerhost should be proxied to the Sling container instances.
-
-The HAProxy stats are available at http://dockerhost/haproxy/stats
 
 ## Routing test scenario
 The following commands demonstrate the content-driven dynamic routing:
