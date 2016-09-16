@@ -1,0 +1,9 @@
+# Sling provisioning model for the adaptTo 2016 Slingshot processor
+[feature name=at16-slingshot]
+
+[artifacts]
+  org.apache.sling/org.apache.sling.sample.slingshot/0.8.0-SNAPSHOT
+  ch.x42.at16/instance-info/0.0.1-SNAPSHOT
+  ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
+  org.apache.sling/org.apache.sling.commons.metrics/1.0.0
+  io.dropwizard.metrics/metrics-core/3.1.2

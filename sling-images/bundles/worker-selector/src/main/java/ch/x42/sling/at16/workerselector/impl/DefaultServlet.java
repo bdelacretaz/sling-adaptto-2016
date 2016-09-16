@@ -29,6 +29,7 @@ import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.commons.osgi.PropertiesUtil;
@@ -81,7 +82,7 @@ public class DefaultServlet extends SlingAllMethodsServlet {
         String role = getRoleFromContent(request, r);
         if(role == null) {
             // Else try with resource type and supertype
-            role = getroleFromResourceType(r);
+            role = getRoleFromResourceType(request, r);
         }
         
         // Else try with request attributes
@@ -123,19 +124,13 @@ public class DefaultServlet extends SlingAllMethodsServlet {
             return null;
         }
         
-        String role = null;
-        
-        final ValueMap m = r.adaptTo(ValueMap.class);
-        if(m != null) {
-            final String resourceRole = m.get(ROLE_PROPERTY, String.class);
-            if(resourceRole != null) {
-                role = resourceRole;
-                U.logAndRequestProgress(request, log, "Resource {0} has property {1}, role set to {2}", new Object [] { r.getPath(), ROLE_PROPERTY, role });
-            } else {
-                role = getRoleFromContent(request, r.getParent());
-            }
+        String role = resourceToRole(request, r);
+        if(role != null) {
+            U.logAndRequestProgress(request, log, "Resource {0} has property {1}, role set to {2}", r.getPath(), ROLE_PROPERTY, role);
+        } else {
+            role = getRoleFromContent(request, r.getParent());
         }
-        
+            
         if(role != null) {
             U.logAndRequestProgress(request, log, "Processor role {0} set from content for {1}", role, r.getPath());
         }
@@ -143,9 +138,37 @@ public class DefaultServlet extends SlingAllMethodsServlet {
         return role;
     }
     
-    private String getroleFromResourceType(Resource r) {
+    private String resourceToRole(SlingHttpServletRequest request, Resource r) {
+        final ValueMap m = r.adaptTo(ValueMap.class);
         String role = null;
-        // TODO
+        if(m != null) {
+            role = m.get(ROLE_PROPERTY, String.class);
+        }
+        if(role != null) {
+            U.logAndRequestProgress(request, log, "Processor role {0} set from resource {1}", role, r.getPath());
+        }
+        return role;
+    }
+    
+    private String getRoleFromResourceType(SlingHttpServletRequest request, Resource r) {
+        String role = resourceTypeToRole(request, r.getResourceType());
+        if(role == null) {
+            role = resourceTypeToRole(request, r.getResourceSuperType());
+        }
+        return role;
+    }
+    
+    private String resourceTypeToRole(SlingHttpServletRequest request, String type) {
+        final String path = routingPath + "/resource-types/" + type;
+        final Resource r = request.getResourceResolver().resolve(path);
+        if(r==null) {
+            return null;
+        }
+        
+        String role = resourceToRole(request, r);
+        if(role == null) {
+            role = resourceToRole(request, r.getParent());
+        }
         return role;
     }
 }

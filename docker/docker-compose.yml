@@ -63,6 +63,16 @@ services:
        - SLING_PORT=8080
        - SLING_ROLE=default
 
+  slingshot:
+    image: ch.x42.at16.slingshot:latest
+    depends_on:
+      - etcd
+      - mongo
+    environment:
+       - SLING_DB=at16
+       - SLING_PORT=8080
+       - SLING_ROLE=slingshot
+
   # Fileserver - TODO use a specific Sling image
   fileserver:
     image: ch.x42.at16.default-worker:latest

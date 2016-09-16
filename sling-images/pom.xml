@@ -13,6 +13,7 @@
       <module>parent</module>
       <module>images/worker-selector</module>
       <module>images/default-worker</module>
+      <module>images/slingshot</module>
       <module>images/base</module>
       <module>bundles/support-bundle</module>
       <module>bundles/test-servlets</module>
