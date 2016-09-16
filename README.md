@@ -43,6 +43,8 @@ this prototype should work as well.
 ## Sling Docker Images
 To build the required OSGi bundles and Sling Docker images, run `mvn clean install` from this folder.
 
+This might require a few SNAPSHOT bundles from Sling, you can get the Sling code from http://github.com/apache/sling/ if needed.
+
 ## Starting the cluster
 To start the cluster, build the required Docker images as shown above and then, from the `docker` 
 folder found under this `README` file , assuming `dockerhost` points to your Docker host:
