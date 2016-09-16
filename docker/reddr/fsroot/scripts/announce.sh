@@ -1,7 +1,7 @@
 #!/bin/bash
 # announce this instance to etcd if that's available
 # used for the Sling adaptTo 2016 demo
-export SLING_ROLE=${SLING_ROLE-dyndis}
+export SLING_ROLE=${SLING_ROLE-reddr}
 
 function announce() {
   export CONTAINER_ID=`hostname`

@@ -60,7 +60,7 @@ folder found under this `README` file , assuming `dockerhost` points to your Doc
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up -d etcd mongo haproxy dyndis
+	docker-compose up -d etcd mongo haproxy reddr
 	
 	# start the first Sling instance, which creates initial content
 	docker-compose up -d default
