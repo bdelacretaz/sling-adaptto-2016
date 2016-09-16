@@ -84,15 +84,12 @@ the comments in the `docker-compose.yml` file for which ones make sense to scale
 The following commands demonstrate the content-driven dynamic routing:
 
 Create some content, with a .routing script that specifies the use of 
-a backend worker with the 'fake' role for JSON rendering:
+a backend worker with the 'fileserver' role for JSON rendering:
 
     export H=localhost
 	curl -u admin:admin -Fsling:resourceType=test http://${H}/tmp/test
-	curl -D - -u admin:admin -X MKCOL http://${H}/cluster
-	curl -D - -u admin:admin -X MKCOL http://${H}/cluster/routing
-	curl -D - -u admin:admin -X MKCOL http://${H}/cluster/routing/scripts
-    curl -D - -u admin:admin -X MKCOL http://${H}/cluster/routing/scripts/test
-    export W=fake
+    curl -u admin:admin -X POST http://${H}/cluster/routing/scripts/test
+    export W=fileserver
     echo $W > /tmp/1 && curl -u admin:admin -T /tmp/1 http://${H}/cluster/routing/scripts/test/json.routing
 	
 Note the `Sling-Instance-Info` header in the response to this request:
@@ -100,7 +97,7 @@ Note the `Sling-Instance-Info` header in the response to this request:
     curl -D - http://${H}/tmp/test.tidy.json
 	
 	...
-	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fake"
+	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fileserver"
 	...
 	
 Requesting the same node with an `html` extension uses the `default` worker role, as it doesn't have a specific
@@ -112,14 +109,31 @@ Requesting the same node with an `html` extension uses the `default` worker role
 	Sling-Instance-Info: SlingId:077141a0-63c0-4ab8-b5a4-b33782326000; sling.environment.info:"sling-role:default"	
 	...
 	
-And setting `sling:workerRole` property in the content also defines a worker role, either on the resource or
+Routing can also be defined by HTTP method, here we route all PUT requests to the 'fileserver' processor, as well
+as GET requests to `.jpg` files:
+
+    curl -u admin:admin -F"sling:processorRole=fileserver" http://${H}/cluster/routing/methods/PUT
+	echo fileserver > /tmp/1
+	curl -u admin:admin -X POST http://${H}/cluster/routing/scripts/nt/file
+	curl -u admin:admin -T /tmp/1 http://${H}/cluster/routing/scripts/nt/file/GET.routing
+	
+Now the following requests are handled by the 'fileserver' processor:
+
+    echo "not an image but you get the idea" > /tmp/1
+	curl -D - -u admin:admin -T /tmp/1 http://${H}/tmp/fakeimage.jpg
+	...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
+	
+	curl -D - http://${H}/tmp/fakeimage.jpg
+	...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
+
+Finally, setting `sling:`processorRole` property in the content also defines a worker role, either on the resource or
 its ancestors:
 
-    curl -u admin:admin -F sling:workerRole=fake http://${H}/tmp
+    curl -u admin:admin -F sling:processorRole=fileserver http://${H}/tmp
 	
 	curl -D - http://${H}/tmp/test.html
 	...
-	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fake"
+	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fileserver"
 	...	
 
 ## Load test scenario

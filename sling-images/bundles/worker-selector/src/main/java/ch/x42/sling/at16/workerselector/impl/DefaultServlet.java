@@ -35,7 +35,7 @@ import org.apache.sling.commons.osgi.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Servlet that handles requests for which a specific worker
+/** Servlet that handles requests for which a specific processor
  *  role script is not found. Looks at the resource and resource
  *  type and supertype to see if a role is defined, and if not 
  *  falls back to a default role. 
@@ -48,7 +48,7 @@ public class DefaultServlet extends SlingAllMethodsServlet {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    public static final String ROLE_PROPERTY = "sling:workerRole";
+    public static final String ROLE_PROPERTY = "sling:processorRole";
     
     public static final String DEFAULT_ROLE_VALUE = "default";
     
@@ -75,29 +75,50 @@ public class DefaultServlet extends SlingAllMethodsServlet {
         
         final Resource r = request.getResource();
                 
-        // Worker role defined in content has priority
-        String workerRole = getWorkerRoleFromContent(request, r);
+        // TODO roles should be cached??
         
-        if(workerRole != null) {
-            U.logAndRequestProgress(request, log, "Worker role {0} set from content for {1}", workerRole, r.getPath());
-        } else {
+        // Role defined in content has priority
+        String role = getRoleFromContent(request, r);
+        if(role == null) {
             // Else try with resource type and supertype
-            workerRole = getWorkerRoleFromResourceType(r);
+            role = getroleFromResourceType(r);
         }
         
-        if(workerRole == null) {
-            workerRole = defaultRole;
-            U.logAndRequestProgress(request, log, "Worker role {0} set by default for {1}", workerRole, r.getPath());
+        // Else try with request attributes
+        if(role == null) {
+            role = getRoleFromRequest(request);
         }
         
-        U.logAndRequestProgress(request, log, "No worker script for current request to {0}, worker role set to {1}", r.getPath(), workerRole);
-        U.outputRole(response, workerRole);
+        // Else use our default role
+        if(role == null) {
+            role = defaultRole;
+            U.logAndRequestProgress(request, log, "Processor role {0} set by default for {1}", role, r.getPath());
+        }
+        
+        U.logAndRequestProgress(request, log, "No routing script for current request to {0}, processor role set to {1}", r.getPath(), role);
+        U.outputRole(response, role);
     }
     
-    /** Find worker role property on the resource itself, or its ancestors.
-     *  TODO should be cached.
-     */
-    private String getWorkerRoleFromContent(SlingHttpServletRequest request, Resource r) {
+    private String getRoleFromRequest(SlingHttpServletRequest request) {
+        String role = null;
+        final String methodPath = routingPath + "/methods/" + request.getMethod();
+        final Resource r = request.getResourceResolver().resolve(methodPath);
+        if(r != null) {
+            final ValueMap m = r.adaptTo(ValueMap.class);
+            if(m != null && m.containsKey(ROLE_PROPERTY)) {
+                role = m.get(ROLE_PROPERTY, String.class).trim();
+            }
+        }
+        
+        if(role != null) {
+            U.logAndRequestProgress(request, log, "Processor role {0} set from {1}/{2}", 
+                    role, request.getMethod(), r.getPath(), ROLE_PROPERTY);
+        }
+        
+        return role;
+    }
+    
+    private String getRoleFromContent(SlingHttpServletRequest request, Resource r) {
         if(r == null) {
             return null;
         }
@@ -111,15 +132,18 @@ public class DefaultServlet extends SlingAllMethodsServlet {
                 role = resourceRole;
                 U.logAndRequestProgress(request, log, "Resource {0} has property {1}, role set to {2}", new Object [] { r.getPath(), ROLE_PROPERTY, role });
             } else {
-                role = getWorkerRoleFromContent(request, r.getParent());
+                role = getRoleFromContent(request, r.getParent());
             }
+        }
+        
+        if(role != null) {
+            U.logAndRequestProgress(request, log, "Processor role {0} set from content for {1}", role, r.getPath());
         }
         
         return role;
     }
     
-    /** Find worker role set on the resource type or supertype path under our search root. */
-    private String getWorkerRoleFromResourceType(Resource r) {
+    private String getroleFromResourceType(Resource r) {
         String role = null;
         // TODO
         return role;
