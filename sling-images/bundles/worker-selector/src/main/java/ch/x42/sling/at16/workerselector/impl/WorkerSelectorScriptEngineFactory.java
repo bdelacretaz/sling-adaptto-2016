@@ -35,7 +35,7 @@ public class WorkerSelectorScriptEngineFactory extends AbstractScriptEngineFacto
     public static final List<String> EXTENSIONS = new ArrayList<String>();
     
     static {
-        EXTENSIONS.add("worker");
+        EXTENSIONS.add("routing");
     }
     
     @Override

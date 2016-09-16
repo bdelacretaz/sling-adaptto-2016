@@ -56,9 +56,17 @@ public class DefaultServlet extends SlingAllMethodsServlet {
     public static final String PROP_DEFAULT_ROLE = "default.role";
     private String defaultRole;
     
+    /** Path under which routing is defined */
+    public static final String DEFAULT_ROUTING_PATH = "/cluster/routing";
+    
+    @Property(value=DEFAULT_ROUTING_PATH)
+    public static final String PROP_ROUTING_PATH = "routing.path";
+    private String routingPath;
+    
     @Activate
     protected void activate(Map<String, Object> config) throws ServletException {
         defaultRole = PropertiesUtil.toString(config.get(PROP_DEFAULT_ROLE), DEFAULT_ROLE_VALUE);
+        routingPath = PropertiesUtil.toString(config.get(PROP_ROUTING_PATH), DEFAULT_ROUTING_PATH);
     }
     
     @Override

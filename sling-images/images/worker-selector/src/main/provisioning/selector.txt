@@ -10,7 +10,7 @@
 
 [configurations]
   org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl
-    resource.resolver.searchpath=["/workerdefs","/apps","/libs"]
+    resource.resolver.searchpath=["/cluster/routing/scripts"]
 
   org.apache.sling.servlets.resolver.SlingServletResolver
     servletresolver.cacheSize=I"0"

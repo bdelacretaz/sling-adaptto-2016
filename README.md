@@ -83,15 +83,17 @@ the comments in the `docker-compose.yml` file for which ones make sense to scale
 ## Routing test scenario
 The following commands demonstrate the content-driven dynamic routing:
 
-Create some content, with a .worker script that specifies the use of 
+Create some content, with a .routing script that specifies the use of 
 a backend worker with the 'fake' role for JSON rendering:
 
     export H=localhost
 	curl -u admin:admin -Fsling:resourceType=test http://${H}/tmp/test
-	curl -D - -u admin:admin -X MKCOL http://${H}/workerdefs
-    curl -D - -u admin:admin -X MKCOL http://${H}/workerdefs/test
+	curl -D - -u admin:admin -X MKCOL http://${H}/cluster
+	curl -D - -u admin:admin -X MKCOL http://${H}/cluster/routing
+	curl -D - -u admin:admin -X MKCOL http://${H}/cluster/routing/scripts
+    curl -D - -u admin:admin -X MKCOL http://${H}/cluster/routing/scripts/test
     export W=fake
-    echo $W > /tmp/1 && curl -u admin:admin -T /tmp/1 http://${H}/workerdefs/test/json.worker
+    echo $W > /tmp/1 && curl -u admin:admin -T /tmp/1 http://${H}/cluster/routing/scripts/test/json.routing
 	
 Note the `Sling-Instance-Info` header in the response to this request:
 
@@ -102,7 +104,7 @@ Note the `Sling-Instance-Info` header in the response to this request:
 	...
 	
 Requesting the same node with an `html` extension uses the `default` worker role, as it doesn't have a specific
-`.worker` script:
+`.routing` script:
 
     curl -D - http://${H}/tmp/test.html
 	
