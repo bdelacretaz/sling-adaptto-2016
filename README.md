@@ -172,3 +172,10 @@ The following requests can currently be used to generate load (example with the 
     /at16 has 103 descendant nodes with an 'id' property.
 
 Metrics are available at http://dockerhost/system/console/slingmetrics - if several Sling instances are active this will hit each a different one every time due to the `haproxy` round-robin setup.
+
+## Troubleshooting tips
+To see the logs of the `reddr` service which dispatches requests to the Sling processors, use `docker-compose logs -f reddr`
+
+http://dockerhost:81 proxies the Sling processors, based on the `Sling-Worker-Host` header value. To access a specific processor from a browser (or set of processors if several are up for the same role), use a browser plugin that allows for setting this additional HTTP header. The `default` processor is used by default (obviously), and the webconsole of the processors show an ID like `sling-role:default-3bfa11f943d8` indicating the configured role and container hostname which is the Docker container ID by default.
+
+The Composum browser is available at http://dockerhost/bin/browser.html
