@@ -17,6 +17,6 @@
       <module>bundles/support-bundle</module>
       <module>bundles/test-servlets</module>
       <module>bundles/metrics-es-reporter</module>
-      <module>bundles/instance-info-filter</module>
+      <module>bundles/instance-info</module>
     </modules>
 </project>

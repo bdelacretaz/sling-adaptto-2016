@@ -31,10 +31,10 @@
     </parent>
     
     <groupId>ch.x42.at16</groupId>
-    <artifactId>instance-info-filter</artifactId>
+    <artifactId>instance-info</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>Sling adaptoTo() 2016 Instance Info Filter</name>
+    <name>Sling adaptoTo() 2016 Instance Info</name>
 	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -71,6 +71,9 @@
                 <artifactId>maven-bundle-plugin</artifactId>
 				<version>3.0.1</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <Sling-Bundle-Resources>/,path:=/bundle-resources</Sling-Bundle-Resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -100,6 +103,12 @@
            <groupId>org.apache.sling</groupId>
            <artifactId>org.apache.sling.settings</artifactId>
            <version>1.3.8</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.apache.felix</groupId>
+           <artifactId>org.apache.felix.webconsole</artifactId>
+           <version>4.2.10</version>
            <scope>provided</scope>
        </dependency>
        <dependency>

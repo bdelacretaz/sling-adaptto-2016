@@ -3,7 +3,7 @@
 
 [artifacts]
   ch.x42.at16/worker-selector/0.0.1-SNAPSHOT
-  ch.x42.at16/instance-info-filter/0.0.1-SNAPSHOT
+  ch.x42.at16/instance-info/0.0.1-SNAPSHOT
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
   org.apache.sling/org.apache.sling.commons.metrics/1.0.0
   io.dropwizard.metrics/metrics-core/3.1.2

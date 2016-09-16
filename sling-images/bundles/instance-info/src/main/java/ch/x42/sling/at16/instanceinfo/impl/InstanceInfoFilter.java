@@ -52,7 +52,6 @@ public class InstanceInfoFilter implements Filter {
 
     public static String HEADER_NAME = "Sling-Instance-Info";
     private String envInfo;
-    public static final String SLING_ENV_INFO = "sling.environment.info";
     
     @Reference
     private SlingSettingsService settings;
@@ -67,16 +66,13 @@ public class InstanceInfoFilter implements Filter {
     
     @Activate
     public void activate(ComponentContext ctx) {
-        envInfo = ctx.getBundleContext().getProperty(SLING_ENV_INFO);
-        if(envInfo == null) {
-            envInfo = "NO INFO PROVIDED";
-        }
+        envInfo = U.getEnvInfo(ctx);
     }
     
     @Override
     public void doFilter(ServletRequest request, ServletResponse servletResponse, FilterChain chain) 
     throws IOException, ServletException {
-        final String headerValue = MessageFormat.format("SlingId:{0}; {1}:\"{2}\"", settings.getSlingId(), SLING_ENV_INFO, envInfo);
+        final String headerValue = MessageFormat.format("SlingId:{0}; {1}:\"{2}\"", settings.getSlingId(), U.SLING_ENV_INFO, envInfo);
         final HttpServletResponse response = (HttpServletResponse)servletResponse;
         response.addHeader(HEADER_NAME, headerValue);
         
