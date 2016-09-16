@@ -7,8 +7,9 @@
   org.apache.sling/org.apache.sling.commons.metrics/1.0.0
   io.dropwizard.metrics/metrics-core/3.1.2
   
-  # Demo support bundle
+  # Demo bundles
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
+  ch.x42.at16/test-servlets/0.0.1-SNAPSHOT
   ch.x42.at16/instance-info-filter/0.0.1-SNAPSHOT
 
 # TODO  	  
