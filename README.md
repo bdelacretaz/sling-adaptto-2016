@@ -110,21 +110,28 @@ Requesting the same node with an `html` extension uses the `default` worker role
 	...
 	
 Routing can also be defined by HTTP method, here we route all PUT requests to the 'fileserver' processor, as well
-as GET requests to `.jpg` files:
+as GET requests to files:
 
     curl -u admin:admin -F"sling:processorRole=fileserver" http://${H}/cluster/routing/methods/PUT
 	echo fileserver > /tmp/1
 	curl -u admin:admin -X POST http://${H}/cluster/routing/scripts/nt/file
 	curl -u admin:admin -T /tmp/1 http://${H}/cluster/routing/scripts/nt/file/GET.routing
 	
-Now the following requests are handled by the 'fileserver' processor:
+Now the following requests are handled by the 'fileserver' processor, except for the POST used
+to create the test path:
 
     echo "not an image but you get the idea" > /tmp/1
-	curl -D - -u admin:admin -T /tmp/1 http://${H}/tmp/fakeimage.jpg
-	...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
+    curl -D - -u admin:admin -T /tmp/1 http://${H}/tmp/fakeimage.jpg
+    curl -u admin:admin -X POST http://${H}/some/other/path
+    # (might need to wait a bit here, eventual consistency between both instances)
+    curl -D - -u admin:admin -T /tmp/1 http://${H}/some/other/path/somefile.txt
+    ...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
 	
-	curl -D - http://${H}/tmp/fakeimage.jpg
-	...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
+    curl -D - http://${H}/tmp/fakeimage.jpg
+    ...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
+    
+    curl -D - http://${H}/some/other/path/somefile.txt
+    ...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
 
 Finally, setting `sling:`processorRole` property in the content also defines a worker role, either on the resource or
 its ancestors:
