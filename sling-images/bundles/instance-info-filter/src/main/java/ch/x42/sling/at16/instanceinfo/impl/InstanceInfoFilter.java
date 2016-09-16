@@ -35,6 +35,8 @@ import org.apache.felix.scr.annotations.Properties;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.request.RequestProgressTracker;
 import org.apache.sling.settings.SlingSettingsService;
 import org.osgi.service.component.ComponentContext;
 
@@ -74,9 +76,17 @@ public class InstanceInfoFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse servletResponse, FilterChain chain) 
     throws IOException, ServletException {
-        final String value = MessageFormat.format("SlingId:{0}; {1}:\"{2}\"", settings.getSlingId(), SLING_ENV_INFO, envInfo);
+        final String headerValue = MessageFormat.format("SlingId:{0}; {1}:\"{2}\"", settings.getSlingId(), SLING_ENV_INFO, envInfo);
         final HttpServletResponse response = (HttpServletResponse)servletResponse;
-        response.addHeader(HEADER_NAME, value);
+        response.addHeader(HEADER_NAME, headerValue);
+        
+        // Log some useful info to the sling RequestProgressTracker if we have it
+        if(request instanceof SlingHttpServletRequest) {
+            RequestProgressTracker t = ((SlingHttpServletRequest)request).getRequestProgressTracker();
+            t.log("{0}={1}", HEADER_NAME, headerValue);
+            t.log("Content-Type={0}", request.getContentType());
+        }
+            
         chain.doFilter(request, response);
     }
 }

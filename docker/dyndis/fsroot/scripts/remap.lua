@@ -7,19 +7,36 @@
 function remap(r)
   -- our config, generated from the container environment
   require("dyndis.config")
+  string = require "string"
   
   -- get role via HTTP
-  selectorUrl = DYNDIS_WORKER_SELECTOR_URL .. r.uri
-  local t = {}
-  require "socket.http".request{ url=selectorUrl, method=r.method, sink=ltn12.sink.table(t) }
-  p = table.concat(t)
-  if p==nil
+  local selectorUrl = DYNDIS_WORKER_SELECTOR_URL .. r.uri
+  local out = {}
+  
+  local H_CONTENT_TYPE = "Content-Type"
+  local contentType = r.headers_in[H_CONTENT_TYPE]
+  local selectorHeaders = {}
+  if contentType ~= nil
+  then
+    selectorHeaders[H_CONTENT_TYPE] = contentType
+  else
+    contentType = ""	
+  end
+  
+  require "socket.http".request{ 
+    url=selectorUrl, 
+    method=r.method, 
+    headers=selectorHeaders,
+    sink=ltn12.sink.table(out) 
+  }
+  
+  local selectorString = table.concat(out)
+  if selectorString==nil
   then
 	error("No content returned from worker selector " .. DYNDIS_WORKER_SELECTOR_URL)
   end
   	  
-  string = require "string"
-  role = string.match(p, DYNDIS_WORKER_SELECTOR_REGEXP)
+  local role = string.match(selectorString, DYNDIS_WORKER_SELECTOR_REGEXP)
   if role==nil
   then
 	role = 'NO_HEADER_PROVIDED, REGEXP=' .. DYNDIS_WORKER_SELECTOR_REGEXP
@@ -31,8 +48,10 @@ function remap(r)
 	.. ", proxying to "
         .. r.method .. " "
 	.. DYNDIS_PROXY_TO_URL
-	.. " with header " 
+	.. " with headers " 
 	.. DYNDIS_ADD_HEADER_NAME .. "=" .. role
+	.. " Content-Type="
+	.. contentType
 	)
   
   -- forward to mod_proxy with additional header
