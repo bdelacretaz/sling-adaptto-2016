@@ -73,7 +73,8 @@
                 <extensions>true</extensions>
                 <configuration>
                   <instructions>
-                    <Sling-Bundle-Resources>/;path:=/bundle-resources</Sling-Bundle-Resources>
+                    <!-- FIXME Below mapping causes problem as it binds to / -->
+                    <!--<Sling-Bundle-Resources>/;path:=/bundle-resources</Sling-Bundle-Resources>-->
                   </instructions>
                 </configuration>
             </plugin>
