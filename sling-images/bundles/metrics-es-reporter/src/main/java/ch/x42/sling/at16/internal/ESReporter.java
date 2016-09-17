@@ -143,7 +143,7 @@ public class ESReporter {
             }
             String value = context.getProperty(name);
             if (value != null) {
-                additionalFields.put(name, value);
+                additionalFields.put(esSafeFieldName(name), value);
             } else {
                 missing.add(name);
             }
@@ -155,6 +155,11 @@ public class ESReporter {
 
         log.info("Additional fields which would be sent as part of metric data to ES server {}", additionalFields);
         return additionalFields;
+    }
+
+    private static String esSafeFieldName(String keyName){
+        //ES does not allow '.' in field names
+        return keyName.replace('.', '_');
     }
 
     private static String getName(Map<String, Object> props) {
