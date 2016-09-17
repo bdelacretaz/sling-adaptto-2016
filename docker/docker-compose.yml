@@ -28,6 +28,32 @@ services:
     environment:
         - SLING_FRONTEND_ROLE_REGEXP=reddr
 
+  elasticsearch:
+    image: elasticsearch:2.4.0
+    ports:
+       - "9200:9200"
+       - "9300:9300"
+    ## uncomment and adjust the path before the colon to some local directory where the data should be stored at
+    ## NOTE: if you don't do that, the data will not be persistent!
+    #volumes:
+    # - /var/data/docker/es-sling:/usr/share/elasticsearch/data
+    #environment:
+    # - ES_HEAP_SIZE=6g # adjust heap size, should be half of your nodes RAM (max 30g)
+    command: elasticsearch
+      --cluster.name monitoring-cluster
+      --index.number_of_replicas 0
+      --network.bind_host _non_loopback:ipv4_
+      --node.name es-monitoring-01
+      --http.cors.enabled true
+      --http.cors.allow-origin *
+
+  kibana:
+    image: kibana:4.6
+    ports:
+     - "5601:5601"
+    depends_on:
+     - elasticsearch
+
   reddr:
     build: reddr
     depends_on:
@@ -68,6 +94,7 @@ services:
     depends_on:
       - etcd
       - mongo
+      - elasticsearch
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080

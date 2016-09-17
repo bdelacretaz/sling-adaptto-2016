@@ -5,5 +5,19 @@
   org.apache.sling/org.apache.sling.sample.slingshot/0.8.0-SNAPSHOT
   ch.x42.at16/instance-info/0.0.1-SNAPSHOT
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
+  ch.x42.at16/metrics-es-reporter/0.0.1-SNAPSHOT
   org.apache.sling/org.apache.sling.commons.metrics/1.0.0
   io.dropwizard.metrics/metrics-core/3.1.2
+
+[configurations]
+  ch.x42.sling.at16.internal.ESReporter
+    #This is defined while launching Sling to uniquely identify it
+    additionalFwkProps=[ \
+      "sling.environment.info" \
+      ]
+    indexName="metrics"
+    #Setting reportingInterval to low value for demo purpose
+    reportingTimeIntervalInSecs=I"10"
+    servers=[ \
+      "elasticsearch:9200" \
+      ]

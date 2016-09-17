@@ -195,3 +195,13 @@ To see the logs of the `reddr` service which dispatches requests to the Sling pr
 http://dockerhost:81 proxies the Sling processors, based on the `Sling-Worker-Host` header value. To access a specific processor from a browser (or set of processors if several are up for the same role), use a browser plugin that allows for setting this additional HTTP header. The `default` processor is used by default (obviously), and the webconsole of the processors show an ID like `sling-role:default-3bfa11f943d8` indicating the configured role and container hostname which is the Docker container ID by default.
 
 The Composum browser is available at http://dockerhost/bin/browser.html
+
+## ELK Integration
+
+This setup also configures the ELK stack (Elasticsearch, Kibana and Logstash). Kibana is used to visualize the metrics
+stats. Each sling instance has a Metric ES Reporter configured which periodically send the local metrics to ES server.
+Those metrics can then be visualized in Kibana
+
+Kibana server can be accessed at http://dockerhost:5601. Index related to metrics data can be accessed at http://dockerhost:9200/_cat/indices
+
+TODO Saved Kibana Visualization
