@@ -73,7 +73,7 @@
                 <extensions>true</extensions>
                 <configuration>
                   <instructions>
-                    <Sling-Bundle-Resources>/,path:=/bundle-resources</Sling-Bundle-Resources>
+                    <Sling-Bundle-Resources>/;path:=/bundle-resources</Sling-Bundle-Resources>
                   </instructions>
                 </configuration>
             </plugin>
