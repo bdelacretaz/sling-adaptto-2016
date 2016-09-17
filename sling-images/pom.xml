@@ -19,5 +19,6 @@
       <module>bundles/test-servlets</module>
       <module>bundles/metrics-es-reporter</module>
       <module>bundles/instance-info</module>
+      <module>bundles/worker-selector</module>
     </modules>
 </project>
