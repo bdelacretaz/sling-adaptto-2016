@@ -47,4 +47,10 @@ public @interface ESReporterConfig {
             description = "Time interval in seconds for sending the report"
     )
     int reportingTimeIntervalInSecs() default 60;
+
+    @AttributeDefinition(
+            name = "Framework Property Names",
+            description = "Name of framework properties which need to be sent to ES server"
+    )
+    String[] additionalFwkProps() default {};
 }

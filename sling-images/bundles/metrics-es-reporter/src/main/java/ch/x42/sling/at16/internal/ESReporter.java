@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import com.codahale.metrics.MetricRegistry;
 import org.apache.sling.settings.SlingSettingsService;
 import org.elasticsearch.metrics.ElasticsearchReporter;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
@@ -59,8 +60,8 @@ public class ESReporter {
     private SlingSettingsService settingsService;
 
     @Activate
-    private void activate(ESReporterConfig config) throws IOException {
-        Map<String, Object> additionalFields = getAdditionalFields();
+    private void activate(BundleContext context, ESReporterConfig config) throws IOException {
+        Map<String, Object> additionalFields = getAdditionalFields(context, config);
         Callable<Boolean> callback = createCallback(config, additionalFields);
         bootstrapTask = new ReporterBootstrapTask(config, callback, additionalFields);
     }
@@ -127,11 +128,32 @@ public class ESReporter {
         }
     }
 
-    private Map<String, Object> getAdditionalFields() {
+    private Map<String, Object> getAdditionalFields(BundleContext context, ESReporterConfig config) {
         //TODO Possibly add other props like name from DiscoveryService
         //TODO See if dependency on Sling API can be made optional
         Map<String, Object> additionalFields = new HashMap<>();
         additionalFields.put("slingId", settingsService.getSlingId());
+
+        List<String> missing = new ArrayList<>();
+        for (String name : config.additionalFwkProps()) {
+            //TODO Somehow if no value specified an array with 1 empty string is returned
+            //Probably a bug in SCR
+            if (name.isEmpty()){
+                continue;
+            }
+            String value = context.getProperty(name);
+            if (value != null) {
+                additionalFields.put(name, value);
+            } else {
+                missing.add(name);
+            }
+        }
+
+        if (!missing.isEmpty()) {
+            log.warn("Following framework properties are not defined {}", missing);
+        }
+
+        log.info("Additional fields which would be sent as part of metric data to ES server {}", additionalFields);
         return additionalFields;
     }
 
