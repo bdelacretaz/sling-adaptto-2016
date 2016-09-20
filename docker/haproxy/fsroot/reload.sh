@@ -56,6 +56,7 @@ function generate_config() {
     echo "frontend workers_81"
 	echo "  bind 0.0.0.0:81"
 	echo "  # TODO default backend role should be provided by environment"
+	echo "  # TODO currently this backend is not found until default service is up"
 	echo "  default_backend default_worker_loadbalancer"
 	
     # ACLs and backends for per-role routing
@@ -66,11 +67,6 @@ function generate_config() {
       echo "  acl hdr_role_${r} hdr_beg(Sling-Worker-Role) -i ${r}"
 	  echo "  use_backend ${r}_worker_loadbalancer if hdr_role_${r}"
 	done
-	
-	echo
-	echo "backend worker_default_backend"
-	enable_stats /
-	std_listen_opts
 	
 	for r in $ROLES
 	do
