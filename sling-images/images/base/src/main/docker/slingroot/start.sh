@@ -1,5 +1,5 @@
 #!/bin/bash
-export JAVA_OPTS="-Xmx512m"
+export JAVA_OPTS="${SLING_JAVA_OPTS--Xmx256M}"
 export SLING_OPTS="-Dsling.run.modes=oak_mongo,oak -Doak.mongo.uri=mongodb://mongo:27017 -Doak.mongo.db=${SLING_DB} -p ${SLING_PORT} -Dsling.environment.info=sling-role:${SLING_ROLE}-$(hostname)"
 
 echo Starting Sling in `pwd`
