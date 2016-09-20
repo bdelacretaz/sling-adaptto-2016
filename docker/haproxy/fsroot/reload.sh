@@ -60,7 +60,7 @@ function generate_config() {
 	echo "  default_backend default_worker_loadbalancer"
 	
     # ACLs and backends for per-role routing
-	ROLES=$(grep -v '^ *$' < $IN | awk -F# '{ print $1}' | sort | egrep -v ${SLING_FRONTEND_ROLE_REGEXP})
+	ROLES=$(grep -v '^ *$' < $IN | awk -F# '{ print $1}' | sort -u | egrep -v ${SLING_FRONTEND_ROLE_REGEXP})
 	for r in $ROLES
 	do
       echo
