@@ -26,7 +26,10 @@ import org.apache.felix.webconsole.BrandingPlugin;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.ComponentContext;
 
-/** Add info about this instance to the Felix webconsole */
+/** Add info about this instance to the Felix webconsole.
+ *  Assumes that logo etc. is provided by the Sling webconsole
+ *  branding bundle at the standard locations, as we only
+ *  want to change the page title to show our instance info. */
 @Component
 @Service(value=BrandingPlugin.class)
 @Property(name=Constants.SERVICE_RANKING, intValue=10000)
@@ -57,7 +60,7 @@ public class WebConsoleBranding implements BrandingPlugin {
 
     @Override
     public String getProductImage() {
-        return "";
+        return "/res/sling/logo.png";
     }
 
     @Override
@@ -72,7 +75,7 @@ public class WebConsoleBranding implements BrandingPlugin {
 
     @Override
     public String getVendorImage() {
-        return "/res/imgs/logo.png";
+        return "";
     }
 
     @Override
