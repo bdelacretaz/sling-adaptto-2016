@@ -111,7 +111,22 @@ Requesting the same node with an `html` extension uses the `default` worker role
     ...
 	Sling-Instance-Info: SlingId:077141a0-63c0-4ab8-b5a4-b33782326000; sling.environment.info:"sling-role:default"	
 	...
-	
+
+## Dynamic HTTP request routing via the "selector" Sling instance
+This routing is driven by the _selector_ Sling processor instance, that a Lua script configured in the _reddr_ HTTP front-end service calls to find out which processor to proxy the request to.
+
+Like all our processors, this _selector_ can be called by adding a _Sling-Worker-Role_ header to a request on port 81, so the following two requests explain why the _fileserver_ and _default_ processors are used for the above requests:
+
+    curl -H Sling-Worker-Role:selector http://${H}:81/tmp/test.tidy.json
+    fileserver
+    
+    curl -H Sling-Worker-Role:selector http://${H}:81/tmp/test.html
+    default
+    
+The _selector_ processor replies with just one word which is the name of the processor to use, driven by the usual Sling script resolution rules, enhanced with some method and resource type selection described below. This is implemented in our `worker-selector` bundle.
+    
+## Routing test scenario, continued
+
 Routing can also be defined by HTTP method, here we route all PUT requests to the 'fileserver' processor, as well
 as GET requests to files:
 
