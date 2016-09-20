@@ -65,6 +65,7 @@ folder found under this `README` file , assuming `dockerhost` points to your Doc
 	docker-compose up -d etcd mongo haproxy reddr
 	
 	# start the first Sling instance, which creates initial content
+	# (the haproxy 80 and 81 ports won't respond unless that service is up)
 	docker-compose up -d default
 	
 	# Wait for http://dockerhost:81/ to show the Sling launchpad page
