@@ -62,9 +62,9 @@ folder found under this `README` file , assuming `dockerhost` points to your Doc
 	docker-compose build
 
     # start the infrastructure containers	
-	docker-compose up -d etcd mongo haproxy reddr
+	docker-compose up -d etcd mongo haproxy reddr selector
 	
-	# start the first Sling instance, which creates initial content
+	# Start the first Sling instance, which creates initial content
 	# (the haproxy 80 and 81 ports won't respond unless that service is up)
 	docker-compose up -d default
 	
