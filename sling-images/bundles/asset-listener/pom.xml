@@ -31,14 +31,13 @@
   </parent>
 
   <groupId>ch.x42.at16</groupId>
-  <artifactId>image-processor</artifactId>
+  <artifactId>asset-listener</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Sling adaptoTo() 2016 Asset Processor</name>
+  <name>Sling adaptoTo() 2016 Asset Change Listener</name>
 
   <description>
-    This bundle looks for job related to asset processing and then
-    generates renditions and add them back to repository
+    Listens for asset nodes added to repository and generates job for them
   </description>
 
   <properties>
@@ -78,6 +77,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
+            <Sling-Nodetypes>SLING-INF/nodetypes/assets.cnd</Sling-Nodetypes>
             <_dsannotations>*</_dsannotations>
           </instructions>
         </configuration>
@@ -103,19 +103,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.api</artifactId>
-      <version>2.4.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
@@ -143,25 +133,14 @@
       <version>15.0</version>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.4</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.jobs</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.commons.threads</artifactId>
-      <version>3.2.0</version>
+      <groupId>org.apache.jackrabbit</groupId>
+      <artifactId>oak-commons</artifactId>
+      <version>1.4.0</version>
     </dependency>
   </dependencies>
 </project>

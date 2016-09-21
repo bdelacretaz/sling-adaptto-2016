@@ -21,5 +21,6 @@
       <module>bundles/instance-info</module>
       <module>bundles/processor-selector</module>
       <module>bundles/image-processor</module>
+      <module>bundles/asset-listener</module>
     </modules>
 </project>

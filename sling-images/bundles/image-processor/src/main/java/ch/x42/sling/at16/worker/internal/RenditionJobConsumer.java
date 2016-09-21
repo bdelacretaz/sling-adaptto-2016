@@ -88,6 +88,7 @@ public class RenditionJobConsumer implements JobConsumer {
                 try {
                     generator = new RenditionGenerator(newSession(), imagePath);
                     generator.generate();
+                    initialState.setState(Job.JobState.SUCCEEDED);
                     callback.callback(initialState);
                 } catch (Exception e) {
                     listener.update(initialState.newJobUpdateBuilder()
@@ -96,6 +97,7 @@ public class RenditionJobConsumer implements JobConsumer {
                             .build()
                     );
                     initialState.setState(Job.JobState.ERROR);
+                    log.warn("Error occurred while processing path [{}]", imagePath, e);
                 } finally {
                     IOUtils.closeQuietly(generator);
                 }
