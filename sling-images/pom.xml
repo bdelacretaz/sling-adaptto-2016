@@ -20,5 +20,6 @@
       <module>bundles/metrics-es-reporter</module>
       <module>bundles/instance-info</module>
       <module>bundles/processor-selector</module>
+      <module>bundles/image-processor</module>
     </modules>
 </project>
