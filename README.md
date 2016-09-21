@@ -87,7 +87,7 @@ the comments in the `docker-compose.yml` file for which ones make sense to scale
 The following commands demonstrate the content-driven dynamic routing:
 
 Create some content, with a .routing script that specifies the use of 
-a backend worker with the 'fileserver' role for JSON rendering:
+a backend processor with the 'fileserver' role for JSON rendering:
 
     export H=localhost
 	curl -u admin:admin -Fsling:resourceType=test http://${H}/tmp/test
@@ -103,7 +103,7 @@ Note the `Sling-Instance-Info` header in the response to this request:
 	Sling-Instance-Info: SlingId:cd4374af-6192-4a31-9daa-17a016abebd6; sling.environment.info:"sling-role:fileserver"
 	...
 	
-Requesting the same node with an `html` extension uses the `default` worker role, as it doesn't have a specific
+Requesting the same node with an `html` extension uses the `default` processor role, as it doesn't have a specific
 `.routing` script:
 
     curl -D - http://${H}/tmp/test.html
@@ -115,15 +115,15 @@ Requesting the same node with an `html` extension uses the `default` worker role
 ## Dynamic HTTP request routing via the "selector" Sling instance
 This routing is driven by the _selector_ Sling processor instance, that a Lua script configured in the _reddr_ HTTP front-end service calls to find out which processor to proxy the request to.
 
-Like all our processors, this _selector_ can be called by adding a _Sling-Worker-Role_ header to a request on port 81, so the following two requests explain why the _fileserver_ and _default_ processors are used for the above requests:
+Like all our processors, this _selector_ can be called by adding a _Sling-Processor-Role_ header to a request on port 81, so the following two requests explain why the _fileserver_ and _default_ processors are used for the above requests:
 
-    curl -H Sling-Worker-Role:selector http://${H}:81/tmp/test.tidy.json
+    curl -H Sling-Processor-Role:selector http://${H}:81/tmp/test.tidy.json
     fileserver
     
-    curl -H Sling-Worker-Role:selector http://${H}:81/tmp/test.html
+    curl -H Sling-Processor-Role:selector http://${H}:81/tmp/test.html
     default
     
-The _selector_ processor replies with just one word which is the name of the processor to use, driven by the usual Sling script resolution rules, enhanced with some method and resource type selection described below. This is implemented in our `worker-selector` bundle.
+The _selector_ processor replies with just one word which is the name of the processor to use, driven by the usual Sling script resolution rules, enhanced with some method and resource type selection described below. This is implemented in our `processor-selector` bundle.
     
 ## Routing test scenario, continued
 
@@ -151,7 +151,7 @@ to create the test path:
     curl -D - http://${H}/some/other/path/somefile.txt
     ...sling.environment.info:"sling-role:fileserver-6075c6d0b7c6"	
 
-Finally, setting `sling:`processorRole` property in the content also defines a worker role, either on the resource or
+Finally, setting `sling:`processorRole` property in the content also defines a processor role, either on the resource or
 its ancestors:
 
     curl -u admin:admin -F sling:processorRole=fileserver http://${H}/tmp
@@ -208,7 +208,7 @@ Metrics are available at http://dockerhost/system/console/slingmetrics - if seve
 ## Troubleshooting tips
 To see the logs of the `reddr` service which dispatches requests to the Sling processors, use `docker-compose logs -f reddr`
 
-http://dockerhost:81 proxies the Sling processors, based on the `Sling-Worker-Host` header value. To access a specific processor from a browser (or set of processors if several are up for the same role), use a browser plugin that allows for setting this additional HTTP header. The `default` processor is used by default (obviously), and the webconsole of the processors show an ID like `sling-role:default-3bfa11f943d8` indicating the configured role and container hostname which is the Docker container ID by default.
+http://dockerhost:81 proxies the Sling processors, based on the `Sling-Processor-Host` header value. To access a specific processor from a browser (or set of processors if several are up for the same role), use a browser plugin that allows for setting this additional HTTP header. The `default` processor is used by default (obviously), and the webconsole of the processors show an ID like `sling-role:default-3bfa11f943d8` indicating the configured role and container hostname which is the Docker container ID by default.
 
 The Composum browser is available at http://dockerhost/bin/browser.html
 

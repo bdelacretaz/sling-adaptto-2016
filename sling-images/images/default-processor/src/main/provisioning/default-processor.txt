@@ -1,5 +1,5 @@
-# Sling provisioning model for the adaptTo 2016 default worker
-[feature name=default-worker]
+# Sling provisioning model for the adaptTo 2016 default processor
+[feature name=default-processor]
 [artifacts]
   org.apache.sling/org.apache.sling.commons.metrics/1.0.0
   io.dropwizard.metrics/metrics-core/3.1.2

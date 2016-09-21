@@ -5,7 +5,7 @@
   <artifactId>selector</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>slingstart</packaging>
-  <name>Sling adaptoTo() 2016 Demo Worker Selector Docker Image</name>
+  <name>Sling adaptoTo() 2016 Demo Processor Selector Docker Image</name>
   
   <parent>
     <groupId>ch.x42.at16</groupId>

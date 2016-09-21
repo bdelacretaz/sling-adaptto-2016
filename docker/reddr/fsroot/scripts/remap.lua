@@ -10,7 +10,7 @@ function remap(r)
   string = require "string"
   
   -- get role via HTTP
-  local selectorUrl = REDDR_WORKER_SELECTOR_URL .. r.uri
+  local selectorUrl = REDDR_PROCESSOR_SELECTOR_URL .. r.uri
   local out = {}
   
   local H_CONTENT_TYPE = "Content-Type"
@@ -33,13 +33,13 @@ function remap(r)
   local selectorString = table.concat(out)
   if selectorString==nil
   then
-	error("No content returned from worker selector " .. REDDR_WORKER_SELECTOR_URL)
+	error("No content returned from processor selector " .. REDDR_PROCESSOR_SELECTOR_URL)
   end
   	  
-  local role = string.match(selectorString, REDDR_WORKER_SELECTOR_REGEXP)
+  local role = string.match(selectorString, REDDR_PROCESSOR_SELECTOR_REGEXP)
   if role==nil
   then
-	role = 'NO_HEADER_PROVIDED, REGEXP=' .. REDDR_WORKER_SELECTOR_REGEXP
+	role = 'NO_HEADER_PROVIDED, REGEXP=' .. REDDR_PROCESSOR_SELECTOR_REGEXP
   end
 
   r:notice(selectorUrl 

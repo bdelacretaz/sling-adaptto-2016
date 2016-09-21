@@ -31,10 +31,10 @@
     </parent>
     
     <groupId>ch.x42.at16</groupId>
-    <artifactId>worker-selector</artifactId>
+    <artifactId>processor-selector</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>Sling adaptoTo() 2016 Worker Selector</name>
+    <name>Sling adaptoTo() 2016 Processor Selector</name>
 	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

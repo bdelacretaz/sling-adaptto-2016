@@ -52,27 +52,27 @@ function generate_config() {
     generate_servers ${SLING_FRONTEND_ROLE_REGEXP}
 
     echo	
-	echo "# Sling worker instances, selected by a Sling-Worker-Role header"
-    echo "frontend workers_81"
+	echo "# Sling processor instances, selected by a Sling-Processor-Role header"
+    echo "frontend processors_81"
 	echo "  bind 0.0.0.0:81"
 	echo "  # TODO default backend role should be provided by environment"
 	echo "  # TODO currently this backend is not found until default service is up"
-	echo "  default_backend default_worker_loadbalancer"
+	echo "  default_backend default_processor_loadbalancer"
 	
     # ACLs and backends for per-role routing
 	ROLES=$(grep -v '^ *$' < $IN | awk -F# '{ print $1}' | sort -u | egrep -v ${SLING_FRONTEND_ROLE_REGEXP})
 	for r in $ROLES
 	do
       echo
-      echo "  acl hdr_role_${r} hdr_beg(Sling-Worker-Role) -i ${r}"
-	  echo "  use_backend ${r}_worker_loadbalancer if hdr_role_${r}"
+      echo "  acl hdr_role_${r} hdr_beg(Sling-Processor-Role) -i ${r}"
+	  echo "  use_backend ${r}_processor_loadbalancer if hdr_role_${r}"
 	done
 	
 	for r in $ROLES
 	do
       echo
-	  echo "backend ${r}_worker_loadbalancer"
-      std_listen_opts "/" "Sling workers for role ${r}"
+	  echo "backend ${r}_processor_loadbalancer"
+      std_listen_opts "/" "Sling processors for role ${r}"
 	  generate_servers ${r}
 	done
 	

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.workerselector.impl;
+package ch.x42.sling.at16.processorselector.impl;
 
 import java.io.Reader;
 
@@ -31,25 +31,24 @@ import org.apache.sling.scripting.api.AbstractSlingScriptEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Output a worker role selector based on .worker scripts */
-public class WorkerSelectorScriptEngine extends AbstractSlingScriptEngine {
+/** Output a processor role selector based on .processor scripts */
+public class ProcessorSelectorScriptEngine extends AbstractSlingScriptEngine {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    WorkerSelectorScriptEngine(ScriptEngineFactory factory) {
+    ProcessorSelectorScriptEngine(ScriptEngineFactory factory) {
         super(factory);
     }
     
     @Override
     public Object eval(Reader reader, ScriptContext context) throws ScriptException {
         try {
-            // TODO allow the Resource to override the role, using resolveWorkerRole
-            final String workerRole = IOUtils.toString(reader).trim();
+            final String processorRole = IOUtils.toString(reader).trim();
             final SlingHttpServletRequest request = getContext(context, "request", SlingHttpServletRequest.class); 
             final SlingHttpServletResponse response = getContext(context, "response", SlingHttpServletResponse.class);
-            U.logAndRequestProgress(request, log, "Got role {0} from worker script", workerRole);
-            U.outputRole(response, workerRole);
+            U.logAndRequestProgress(request, log, "Got role {0} from processor script", processorRole);
+            U.outputRole(response, processorRole);
         } catch (Exception e) {
-            final ScriptException se = new ScriptException("Worker role resolution setup or execution failed");
+            final ScriptException se = new ScriptException("Processor role resolution setup or execution failed");
             se.initCause(e);
             throw se;
         }

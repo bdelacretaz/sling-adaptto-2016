@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.workerselector.impl;
+package ch.x42.sling.at16.processorselector.impl;
 
 import java.io.IOException;
 import java.text.MessageFormat;

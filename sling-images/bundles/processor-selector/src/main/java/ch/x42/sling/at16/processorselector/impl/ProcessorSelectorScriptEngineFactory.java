@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package ch.x42.sling.at16.workerselector.impl;
+package ch.x42.sling.at16.processorselector.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,10 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.scripting.api.AbstractScriptEngineFactory;
 
-/** Output a worker role selector based on .worker scripts */
+/** Output a processor role selector based on .routing scripts */
 @Component
 @Service(ScriptEngineFactory.class)
-public class WorkerSelectorScriptEngineFactory extends AbstractScriptEngineFactory {
+public class ProcessorSelectorScriptEngineFactory extends AbstractScriptEngineFactory {
     public static final List<String> EXTENSIONS = new ArrayList<String>();
     
     static {
@@ -50,7 +50,7 @@ public class WorkerSelectorScriptEngineFactory extends AbstractScriptEngineFacto
 
     @Override
     public ScriptEngine getScriptEngine() {
-        return new WorkerSelectorScriptEngine(this);
+        return new ProcessorSelectorScriptEngine(this);
     }
 
     @Override

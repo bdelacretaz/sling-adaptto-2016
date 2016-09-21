@@ -5,7 +5,7 @@
   <artifactId>slingshot</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>slingstart</packaging>
-  <name>Sling adaptoTo() 2016 Demo Worker Slingshot Docker Image</name>
+  <name>Sling adaptoTo() 2016 Demo Processor Slingshot Docker Image</name>
   
   <parent>
     <groupId>ch.x42.at16</groupId>

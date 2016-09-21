@@ -63,9 +63,9 @@ services:
     environment:
        - SLING_PORT=80
        - REDDR_PROXY_TO_URL=http://haproxy:81
-       - REDDR_ADD_HEADER_NAME=Sling-Worker-Role
-       - REDDR_WORKER_SELECTOR_URL=http://selector:8080
-       - REDDR_WORKER_SELECTOR_REGEXP=%a+
+       - REDDR_ADD_HEADER_NAME=Sling-Processor-Role
+       - REDDR_PROCESSOR_SELECTOR_URL=http://selector:8080
+       - REDDR_PROCESSOR_SELECTOR_REGEXP=%a+
 
   selector:
     image: ch.x42.at16.selector:latest
@@ -80,7 +80,7 @@ services:
        - SLING_ROLE=selector
 
   default:
-    image: ch.x42.at16.default-worker:latest
+    image: ch.x42.at16.default-processor:latest
     depends_on:
       - etcd
       - mongo
@@ -102,7 +102,7 @@ services:
 
   # Fileserver - TODO use a specific Sling image
   fileserver:
-    image: ch.x42.at16.default-worker:latest
+    image: ch.x42.at16.default-processor:latest
     depends_on:
       - etcd
       - mongo

@@ -1,8 +1,8 @@
-# Sling provisioning model for the adaptTo 2016 worker selector instance
+# Sling provisioning model for the adaptTo 2016 processor selector instance
 [feature name=at16-selector]
 
 [artifacts]
-  ch.x42.at16/worker-selector/0.0.1-SNAPSHOT
+  ch.x42.at16/processor-selector/0.0.1-SNAPSHOT
   ch.x42.at16/instance-info/0.0.1-SNAPSHOT
   ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
   org.apache.sling/org.apache.sling.commons.metrics/1.0.0

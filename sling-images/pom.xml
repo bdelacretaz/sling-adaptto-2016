@@ -11,14 +11,14 @@
     <name>Sling adaptoTo() 2016 Demo Reactor</name>
     <modules>
       <module>parent</module>
-      <module>images/worker-selector</module>
-      <module>images/default-worker</module>
+      <module>images/processor-selector</module>
+      <module>images/default-processor</module>
       <module>images/slingshot</module>
       <module>images/base</module>
       <module>bundles/support-bundle</module>
       <module>bundles/test-servlets</module>
       <module>bundles/metrics-es-reporter</module>
       <module>bundles/instance-info</module>
-      <module>bundles/worker-selector</module>
+      <module>bundles/processor-selector</module>
     </modules>
 </project>
