@@ -1,0 +1,34 @@
+Bertrand's adaptTo 2016 demo scenario
+
+0) setup
+# Start show-processors.sh in a separate window
+. 0-setup.sh
+
+1) Show Sling instances on port 81, with header tool
+
+2) /tmp/test, json and html routing
+./1-setup-tmp-test.sh - explain
+Two browser tabs: json and html file
+
+3) Show selector instance in action
+curl -H Sling-Processor-Role:selector http://${H}:81/tmp/test.tidy.json
+curl -H Sling-Processor-Role:selector http://${H}:81/tmp/test.html
+
+4) Files and images
+./2-setup-nt-file.sh - explain
+
+curl -X POST http://${H}/some/other/path
+echo "foo" > /tmp/1 ; curl -T /tmp/1 http://${H}/tmp/fakeimage.jpg
+echo "bar" > /tmp/1 ; curl -T /tmp/1 http://${H}/some/other/path/somefile.txt
+curl http://${H}/tmp/fakeimage.jpg
+curl http://${H}/some/other/path/somefile.txt
+
+5) Slingshot
+open http://localhost/slingshot.html
+fails -> ./3-fix-slingshot.sh
+reload -> works
+
+6) /cluster summary
+Show /cluster in browser, explain
+
+7) Fileserver scaling demo?
