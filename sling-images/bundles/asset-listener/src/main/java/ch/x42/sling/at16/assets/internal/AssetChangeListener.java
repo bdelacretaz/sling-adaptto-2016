@@ -70,12 +70,12 @@ public class AssetChangeListener implements EventListener {
             try {
                 Event event = events.nextEvent();
                 //Event path is for child node. So parent path is for actual node
-                String nodeName = PathUtils.getName(event.getPath());
+                String nodeName = PathUtils.getName(PathUtils.getParentPath(event.getPath()));
                 if (!nodeName.equals("original")){
                     return;
                 }
                 //Path like foo.jpg/jcr:content/renditions/original/jcr:content
-                String assetPath = PathUtils.getAncestorPath(event.getPath(), 3);
+                String assetPath = PathUtils.getAncestorPath(event.getPath(), 4);
                 jobManager.newJobBuilder(
                         Types.jobQueue("org/apache/sling/jobs/assets"),
                         Types.jobType("assets/generate/renditions")) //Defined in RenditionJobConsumer
