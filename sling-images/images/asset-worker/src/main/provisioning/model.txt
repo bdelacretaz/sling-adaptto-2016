@@ -254,7 +254,7 @@
     queue-name="org/apache/sling/jobs/assets"
 
   org.apache.sling.amq.ActiveMQConnectionFactoryService
-    jms.brokerUri="tcp\://localhost\:61616"
+    jms.brokerUri="tcp\://activemq\:61616"
 
 [feature name=standalone]
 
