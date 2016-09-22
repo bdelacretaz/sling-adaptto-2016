@@ -44,7 +44,7 @@ This might require a few SNAPSHOT bundles from Sling, you can get the Sling code
 
 ## Starting the cluster
 To start the cluster, build the required Docker images as shown above and then, from the `docker` 
-folder found under this `README` file , assuming `dockerhost` points to your Docker host:
+folder found under this `README` file , assuming `localhost` points to your Docker host:
 
     # Remove existing state, if any
     docker-compose kill
@@ -65,13 +65,13 @@ folder found under this `README` file , assuming `dockerhost` points to your Doc
 	# (the haproxy 80 and 81 ports won't respond unless that service is up)
 	docker-compose up -d default
 	
-	# Wait for http://dockerhost:81/ to show the Sling launchpad page
-	# See also http://dockerhost/haproxy/stats for HTTP routing stats
+	# Wait for http://localhost:81/ to show the Sling launchpad page
+	# See also http://localhost/haproxy/stats for HTTP routing stats
 	
 	# start the remaining containers
 	docker-compose up -d
 	
-After a few seconds http://dockerhost should show the Sling homepage, and the below routing
+After a few seconds http://localhost should show the Sling homepage, and the below routing
 test scenario should work.
 
 If things go wrong you can use `docker-compose logs S` where S is the name of a service
@@ -159,7 +159,7 @@ its ancestors:
 	...	
 
 ## Application-specific processors: Slingshot example
-By default, the http://dockerhost/slingshot.html page does not work in our demo, it gives a JSP compilation error as 
+By default, the http://localhost/slingshot.html page does not work in our demo, it gives a JSP compilation error as 
 the default processor does not have the required `slingshot` demo bundle.
 
 Routing all the requests for resources having a resource type that starts with `slingshot` fixes this:
@@ -177,22 +177,22 @@ Note that if the above settings are still active, the `nt:file` resources of tha
 
 The following requests can currently be used to generate load (example with the alpha.example.com test host):
 
-    $ curl -u admin:admin http://dockerhost/at16.txt
+    $ curl -u admin:admin http://localhost/at16.txt
     /at16 has 0 descendant nodes with an 'id' property.
     
-    $ curl -u admin:admin -X POST http://dockerhost/at16.txt
+    $ curl -u admin:admin -X POST http://localhost/at16.txt
     Added /at16/RootPostServlet/10/08/1008a470-42c8-432a-a7e3-73dd006e4497
     
-    $ curl -u admin:admin -X POST http://dockerhost/at16.txt
+    $ curl -u admin:admin -X POST http://localhost/at16.txt
     Added /at16/RootPostServlet/a4/f5/a4f5e869-9d99-4322-ba4c-0ffcc7474e1c
     
-    $ curl -u admin:admin -X POST http://dockerhost/at16.txt
+    $ curl -u admin:admin -X POST http://localhost/at16.txt
     Added /at16/RootPostServlet/e3/c1/e3c113c9-6374-48c6-b5b1-b3a42cdfb7dc
     
-    $ curl -u admin:admin http://dockerhost/at16.txt
+    $ curl -u admin:admin http://localhost/at16.txt
     /at16 has 3 descendant nodes with an 'id' property.
     
-    $ ab -A admin:admin -p /dev/null -n 100 http://dockerhost/at16.txt
+    $ ab -A admin:admin -p /dev/null -n 100 http://localhost/at16.txt
     This is ApacheBench, Version 2.3 <$Revision: 1706008 $>
 	...
     Benchmarking alpha.example.com (be patient).....done
@@ -202,14 +202,14 @@ The following requests can currently be used to generate load (example with the 
     $ curl -u admin:admin http://alpha.example.com/at16.txt
     /at16 has 103 descendant nodes with an 'id' property.
 
-Metrics are available at http://dockerhost/system/console/slingmetrics - if several Sling instances are active this will hit each a different one every time due to the `haproxy` round-robin setup.
+Metrics are available at http://localhost/system/console/slingmetrics - if several Sling instances are active this will hit each a different one every time due to the `haproxy` round-robin setup.
 
 ## Troubleshooting tips
 To see the logs of the `reddr` service which dispatches requests to the Sling processors, use `docker-compose logs -f reddr`
 
-http://dockerhost:81 proxies the Sling processors, based on the `Sling-Processor-Host` header value. To access a specific processor from a browser (or set of processors if several are up for the same role), use a browser plugin that allows for setting this additional HTTP header. The `default` processor is used by default (obviously), and the webconsole of the processors show an ID like `sling-role:default-3bfa11f943d8` indicating the configured role and container hostname which is the Docker container ID by default.
+http://localhost:81 proxies the Sling processors, based on the `Sling-Processor-Host` header value. To access a specific processor from a browser (or set of processors if several are up for the same role), use a browser plugin that allows for setting this additional HTTP header. The `default` processor is used by default (obviously), and the webconsole of the processors show an ID like `sling-role:default-3bfa11f943d8` indicating the configured role and container hostname which is the Docker container ID by default.
 
-The Composum browser is available at http://dockerhost/bin/browser.html
+The Composum browser is available at http://localhost/bin/browser.html
 
 ## ELK Integration
 
@@ -217,6 +217,6 @@ This setup also configures the ELK stack (Elasticsearch, Kibana and Logstash). K
 stats. Each sling instance has a Metric ES Reporter configured which periodically send the local metrics to ES server.
 Those metrics can then be visualized in Kibana
 
-Kibana server can be accessed at http://dockerhost:5601. Index related to metrics data can be accessed at http://dockerhost:9200/_cat/indices
+Kibana server can be accessed at http://localhost:5601. Index related to metrics data can be accessed at http://localhost:9200/_cat/indices
 
 TODO Saved Kibana Visualization
