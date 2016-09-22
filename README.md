@@ -1,23 +1,20 @@
 # Sling adaptTo 2016 demo - can we run the whole Web on Sling?
 This is the demo code for our http://adapt.to/2016/en/schedule/let_s-run-the-whole-web-on-apache-sling-and-oak-.html talk.
 
-Very much a work in progress for now, we'll update this once it's ready to play with.
+It's pretty much ready, but this README might need some reviewing.
 
-It's adapted from a previous https://github.com/bdelacretaz/docker-sling-hosting example, including some leftovers from that for now.
-
-For now, it connects a number of Sling instances to a common MongoDB database, and automatically makes
-them available via a front-end HAProxy server. Logs are collected in a Graylog instance. All these services
-run in Docker containers.
-
-Apart from some glue scripts to setup the containers there's little or no code here, the goal is to use off-the-shelf
-tools as much as possible, to concentrate on the proof of concept aspects. 
+The scripts folder has the demo scenario, but you might not understand if unless you're myself ;-)
 
 This is obviously not production-ready.
 
-## TODO
-* POSTing to `/at16.txt` is much slower when more than one Sling instance is running, about 1 second vs. 10 msec on my box. Might be related to a once-per-second event as times vary a lot.
-* Once we're happy with the setup, profile and tweak to increase overall throughput. 
-* Review the load scenario and test servlets to make sure we are exposing realistic load paths.
+## What's this?
+This prototype demonstrates the REDDR REsource-Driven Dynamic Routing mechanism, where a specialized Sling instance drives a httpd/mod_lua/mod_proxy and haproxy combination to route HTTP requests to pools of specialized Sling instances.
+
+The routing can use all request _and resource_ attributes that Sling uses to resolve scripts and servlets, along with HTTP method-based routing (which you can also do directly in httpd of course) and routing based on partial or full Sling resource types. All this is demonstrated below.
+
+This drawing, from the conference slides, explains the system:
+
+![REDDR demo system overview](images/reddr-overview.jpg)
 
 ## Prerequisites
 You need a Docker server and `docker-compose` setup to run this.
@@ -176,6 +173,8 @@ Note that if the above settings are still active, the `nt:file` resources of tha
 `fileserver` request processor.
 
 ## Load test scenario
+(We haven't used this in our presentation in the end)
+
 The following requests can currently be used to generate load (example with the alpha.example.com test host):
 
     $ curl -u admin:admin http://dockerhost/at16.txt
