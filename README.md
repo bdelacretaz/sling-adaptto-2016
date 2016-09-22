@@ -14,7 +14,7 @@ The routing can use all request _and resource_ attributes that Sling uses to res
 
 This drawing, from the conference slides, explains the system:
 
-![REDDR demo system overview](images/reddr-overview.jpg)
+![REDDR demo system overview](images/reddr-overview.png)
 
 ## Prerequisites
 You need a Docker server and `docker-compose` setup to run this.
