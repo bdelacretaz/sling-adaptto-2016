@@ -1,4 +1,4 @@
-# Sling adaptTo 2016 demo - can we run the whole Web on Sling?
+# Sling adaptTo 2016 -  can we run the whole Web on Sling?
 This is the demo code for our http://adapt.to/2016/en/schedule/let_s-run-the-whole-web-on-apache-sling-and-oak-.html talk.
 
 It's pretty much ready, but this README might need some reviewing.
