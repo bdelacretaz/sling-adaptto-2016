@@ -49,6 +49,7 @@ import static org.apache.jackrabbit.commons.JcrUtils.getOrAddNode;
 
 class RenditionGenerator implements Closeable {
     private static final Logger log = LoggerFactory.getLogger(RenditionGenerator.class);
+    public static final String PATH_ORIGINAL = "jcr:content/renditions/original";
     private final JackrabbitSession session;
     private final String path;
     private final boolean useOakResource;
@@ -76,7 +77,7 @@ class RenditionGenerator implements Closeable {
     }
 
     private void generate(Node node) throws RepositoryException, IOException {
-        Node originalNode = node.getNode("jcr:content/renditions/original");
+        Node originalNode = node.getNode(PATH_ORIGINAL);
 
         if (!originalNode.hasProperty("jcr:content/jcr:mimeType")) {
             log.warn("Ignoring [{}] as it does not defined the jcr:mimeType", originalNode.getPath());

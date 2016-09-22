@@ -77,7 +77,8 @@ public class RenditionJobConsumer implements JobConsumer {
         //Due to eventual consistent nature of repository its possible that newly
         //added path is not visible on this cluster node
         //So if not present exception would be thrown and job would be reattempted
-        checkArgument(pathExists(imagePath), "No node found at path [%s]", imagePath);
+        String originalPath = imagePath + "/" + RenditionGenerator.PATH_ORIGINAL;
+        checkArgument(pathExists(originalPath), "No node found at path [%s]", originalPath);
         initialState.setState(Job.JobState.QUEUED);
 
         threadPool.execute(new Runnable() {
