@@ -54,6 +54,12 @@ services:
     depends_on:
      - elasticsearch
 
+  activemq:
+    image: rmohr/activemq:5.14.0
+    ports:
+      - "61616:61616"
+      - "61613:61613"
+
   reddr:
     build: reddr
     depends_on:
@@ -95,6 +101,7 @@ services:
       - etcd
       - mongo
       - elasticsearch
+      - activemq
     environment:
        - SLING_DB=at16
        - SLING_PORT=8080
@@ -110,3 +117,17 @@ services:
        - SLING_DB=at16
        - SLING_PORT=8080
        - SLING_ROLE=fileserver
+
+  asset-worker:
+    image: ch.x42.at16.asset-worker:latest
+    depends_on:
+      - etcd
+      - mongo
+      - elasticsearch
+      - activemq
+    environment:
+       - SLING_DB=at16
+       - SLING_PORT=8080
+       - SLING_ROLE=asset-worker
+
+
