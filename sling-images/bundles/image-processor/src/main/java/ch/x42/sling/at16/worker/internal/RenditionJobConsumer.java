@@ -24,6 +24,8 @@ import javax.jcr.Session;
 
 import com.google.common.base.Throwables;
 import org.apache.commons.io.IOUtils;
+import org.apache.sling.commons.metrics.MetricsService;
+import org.apache.sling.commons.metrics.Timer;
 import org.apache.sling.commons.threads.ThreadPool;
 import org.apache.sling.commons.threads.ThreadPoolManager;
 import org.apache.sling.jcr.api.SlingRepository;
@@ -57,9 +59,14 @@ public class RenditionJobConsumer implements JobConsumer {
     private ThreadPoolManager threadPoolManager;
     private ThreadPool threadPool;
 
+    @Reference
+    private MetricsService metrics;
+    private Timer jobTimer;
+
     @Activate
     private void activate(){
         threadPool = threadPoolManager.get("rendition-generator");
+        jobTimer = metrics.timer("rendition-generator");
     }
 
     @Deactivate
@@ -86,6 +93,7 @@ public class RenditionJobConsumer implements JobConsumer {
             public void run() {
                 initialState.setState(Job.JobState.ACTIVE);
                 RenditionGenerator generator = null;
+                Timer.Context context = jobTimer.time();
                 try {
                     generator = new RenditionGenerator(newSession(), imagePath);
                     generator.generate();
@@ -100,6 +108,7 @@ public class RenditionJobConsumer implements JobConsumer {
                     initialState.setState(Job.JobState.ERROR);
                     log.warn("Error occurred while processing path [{}]", imagePath, e);
                 } finally {
+                    context.stop();
                     IOUtils.closeQuietly(generator);
                 }
             }
