@@ -119,7 +119,7 @@ services:
        - SLING_ROLE=fileserver
 
   asset-worker:
-    image: ch.x42.at16.asset-worker:latest
+    image: ch.x42.at16.sling-asset-worker:latest
     depends_on:
       - etcd
       - mongo
