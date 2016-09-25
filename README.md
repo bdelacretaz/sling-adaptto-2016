@@ -7,7 +7,7 @@ The scripts folder has the demo scenario, but you might not understand if unless
 
 This is obviously not production-ready.
 
-If you're at adaptTo 2016 and want to play with this, **please download the Docker images in advance**. Running `mvn clean install` in this folder and docker-compose up -d`in the `docker` folder does that.
+If you're at adaptTo 2016 and want to play with this, **please download the Docker images in advance**. Running `mvn clean install` in this folder and `docker-compose up -d`in the `docker` folder does that.
 
 ## What's this?
 This prototype demonstrates the REDDR REsource-Driven Dynamic Routing mechanism, where a specialized Sling instance drives a httpd/mod_lua/mod_proxy and haproxy combination to route HTTP requests to pools of specialized Sling instances.
