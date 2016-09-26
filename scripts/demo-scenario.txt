@@ -1,5 +1,14 @@
 Bertrand's adaptTo 2016 demo scenario
 
+00) cleanup and start
+docker-compose kill ; docker-compose rm ; docker volume rm $(docker volume ls -q) ; docker rm $(docker ps -q -a)
+Restart Docker
+docker-compose up -d etcd mongo haproxy reddr
+docker-compose up -d selector
+docker exec 1d645f9f2d03 tail -F /opt/sling/sling/logs/error.log
+docker-compose up -d default
+docker-compose up -d fileserver slingshot
+
 0) setup
 # Start show-processors.sh in a separate window
 . 0-setup.sh
@@ -32,3 +41,6 @@ reload -> works
 Show /cluster in browser, explain
 
 7) Fileserver scaling demo?
+
+8) Content cleanup
+for i in /cluster /tmp; do curl -X DELETE http://localhost/$i; done
