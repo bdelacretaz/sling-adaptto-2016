@@ -3,7 +3,7 @@
 if (( $# < 1 ))
 then
     echo "Usage: $0 <url> <file path> <file name>"
-    echo "example: $0 http://localhost/content sling-log.png foo-1.png"
+    echo "example: $0 http://localhost/content sling-logo.png foo-1.png"
     exit 1
 fi
 

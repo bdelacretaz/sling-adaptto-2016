@@ -229,7 +229,7 @@ Setup also includes `sling-asset-worker` which generate renditions for newly add
 `at16:Asset` nodes is added a job is added to ActiveMQ queue for further processing. One of the asset worker would
 pick up the job and generate the renditions for it.
 
-    $ cd resources/assets
+    $ cd scripts
     $ ./create-asset.sh http://localhost/content sling-logo.png foo-1.png
     $ curl -u admin:admin http://localhost/content/foo-1.png.tidy.-1.json
     
