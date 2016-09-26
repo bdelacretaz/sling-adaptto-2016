@@ -222,3 +222,20 @@ Those metrics can then be visualized in Kibana
 Kibana server can be accessed at http://localhost:5601. Index related to metrics data can be accessed at http://localhost:9200/_cat/indices
 
 TODO Saved Kibana Visualization
+
+## Asset Worker Processing
+
+Setup also includes `sling-asset-worker` which generate renditions for newly added `at16:Asset` nodes. Whenever any
+`at16:Asset` nodes is added a job is added to ActiveMQ queue for further processing. One of the asset worker would
+pick up the job and generate the renditions for it.
+
+    $ cd resources/assets
+    $ ./create-asset.sh http://localhost/content sling-logo.png foo-1.png
+    $ curl -u admin:admin http://localhost/content/foo-1.png.tidy.-1.json
+    
+Last command should dump the json dump of all nodes under newly created 
+`at16:Asset` node. 
+
+    $curl -u admin:admin http://localhost/content/foo-1.png.tidy.-1.json
+    
+There you can see a new node under rendition named `1280x1200`
