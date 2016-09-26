@@ -1,13 +1,12 @@
 # adaptTo() 2016 -  can we run the whole Web on Sling?
 This is the demo code for our http://adapt.to/2016/en/schedule/let_s-run-the-whole-web-on-apache-sling-and-oak-.html talk.
 
-It's pretty much ready, but this README might need some reviewing.
-
-The scripts folder has the demo scenario, but you might not understand if unless you're myself ;-)
-
-This is obviously not production-ready.
+The scripts folder has the demo scenario for the conference presentation, similar to the below scenario but
+more up to date. (TODO update this page after the conference).
 
 If you're at adaptTo 2016 and want to play with this, **please download the Docker images in advance**. Running `mvn clean install` in this folder and `docker-compose up -d`in the `docker` folder does that.
+
+This is obviously not production-ready - just pure researchy experimental stuff for now.
 
 ## What's this?
 This prototype demonstrates the REDDR REsource-Driven Dynamic Routing mechanism, where a specialized Sling instance drives a httpd/mod_lua/mod_proxy and haproxy combination to route HTTP requests to pools of specialized Sling instances.
