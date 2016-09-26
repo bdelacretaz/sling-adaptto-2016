@@ -13,6 +13,7 @@
       <module>parent</module>
       <module>images/processor-selector</module>
       <module>images/default-processor</module>
+      <module>images/asset-worker</module>
       <module>images/slingshot</module>
       <module>images/base</module>
       <module>bundles/support-bundle</module>
@@ -20,5 +21,7 @@
       <module>bundles/metrics-es-reporter</module>
       <module>bundles/instance-info</module>
       <module>bundles/processor-selector</module>
+      <module>bundles/image-processor</module>
+      <module>bundles/asset-listener</module>
     </modules>
 </project>

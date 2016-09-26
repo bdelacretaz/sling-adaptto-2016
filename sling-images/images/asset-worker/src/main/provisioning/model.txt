@@ -1,0 +1,265 @@
+[feature name=:boot]
+
+[settings]
+  localIndexDir=${sling.home}/repository/index
+  repository.home=${sling.home}/repository
+  sling.run.mode.install.options=oak_tar,oak_mongo
+
+[artifacts]
+
+  org.apache.aries/org.apache.aries.util/1.1.1
+  org.apache.felix/org.apache.felix.configadmin/1.8.10
+  org.apache.felix/org.apache.felix.coordinator/1.0.2
+  org.apache.felix/org.apache.felix.eventadmin/1.4.8
+# dependency with javax.inject - required for Sling Models (SLING-4710)
+  org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0
+  org.apache.sling/org.apache.sling.commons.log/4.0.6
+  org.apache.sling/org.apache.sling.commons.logservice/1.0.6
+  org.apache.sling/org.apache.sling.fragment.transaction/1.0.0
+  org.apache.sling/org.apache.sling.fragment.ws/1.0.2
+  org.apache.sling/org.apache.sling.fragment.xml/1.0.2
+  org.apache.sling/org.apache.sling.installer.core/3.6.8
+  org.apache.sling/org.apache.sling.installer.factory.configuration/1.1.2
+  org.apache.sling/org.apache.sling.installer.provider.file/1.1.0
+  org.apache.sling/org.apache.sling.javax.activation/0.1.0
+  org.apache.sling/org.apache.sling.launchpad.installer/1.2.2
+  org.apache.sling/org.apache.sling.settings/1.3.8
+  org.slf4j/jcl-over-slf4j/1.7.6
+  org.slf4j/log4j-over-slf4j/1.7.6
+  org.slf4j/slf4j-api/1.7.6
+
+[feature name=:launchpad]
+
+[artifacts]
+
+  org.apache.sling/org.apache.sling.launchpad.base/5.4.0-2.6.10
+
+[feature name=at16-slingshot]
+
+[artifacts]
+
+  ch.x42.at16/instance-info/0.0.1-SNAPSHOT
+  ch.x42.at16/metrics-es-reporter/0.0.1-SNAPSHOT
+  ch.x42.at16/support-bundle/0.0.1-SNAPSHOT
+  ch.x42.at16/image-processor/0.0.1-SNAPSHOT
+  io.dropwizard.metrics/metrics-core/3.1.2
+  org.apache.sling/org.apache.sling.commons.metrics/1.0.0
+
+
+[configurations]
+  ch.x42.sling.at16.internal.ESReporter
+    #This is defined while launching Sling to uniquely identify it
+    additionalFwkProps=[ \
+    "sling.environment.info" \
+    ]
+    indexName="metrics"
+    #Setting reportingInterval to low value for demo purpose
+    reportingTimeIntervalInSecs=I"10"
+    servers=[ \
+    "elasticsearch:9200" \
+    ]
+
+[feature name=oak]
+
+[variables]
+  oak.version=1.5.7
+
+[artifacts startLevel=10]
+
+  org.apache.felix/org.apache.felix.jaas/0.0.4
+
+[artifacts startLevel=15]
+
+  com.google.guava/guava/15.0
+  org.apache.jackrabbit/oak-blob/${oak.version}
+  org.apache.jackrabbit/oak-commons/${oak.version}
+  org.apache.jackrabbit/oak-core/${oak.version}
+  org.apache.jackrabbit/oak-jcr/${oak.version}
+  org.apache.jackrabbit/oak-lucene/${oak.version}
+
+[artifacts startLevel=16]
+
+  org.apache.sling/org.apache.sling.jcr.oak.server/1.1.0
+
+[configurations]
+  org.apache.felix.jaas.ConfigurationSpi
+    jaas.defaultRealmName="jackrabbit.oak"
+    jaas.configProviderName="FelixJaasProvider"
+
+  org.apache.jackrabbit.oak.security.authentication.AuthenticationConfigurationImpl
+    org.apache.jackrabbit.oak.authentication.configSpiName="FelixJaasProvider"
+
+  org.apache.jackrabbit.oak.security.user.RandomAuthorizableNodeName
+    length=I"21"
+
+  org.apache.jackrabbit.oak.security.user.UserConfigurationImpl
+    groupsPath="/home/groups"
+    usersPath="/home/users"
+    defaultDepth="1"
+    importBehavior="besteffort"
+
+  org.apache.jackrabbit.oak.spi.security.user.action.DefaultAuthorizableActionProvider
+    enabledActions=["org.apache.jackrabbit.oak.spi.security.user.action.AccessControlAction"]
+    userPrivilegeNames=["jcr:all"]
+    groupPrivilegeNames=["jcr:read"]
+
+  org.apache.felix.jaas.Configuration.factory-GuestLoginModule
+    jaas.controlFlag="optional"
+    jaas.classname="org.apache.jackrabbit.oak.spi.security.authentication.GuestLoginModule"
+    jaas.ranking=I"300"
+
+  org.apache.felix.jaas.Configuration.factory-LoginModuleImpl
+    jaas.controlFlag="required"
+    jaas.classname="org.apache.jackrabbit.oak.security.authentication.user.LoginModuleImpl"
+
+  org.apache.felix.jaas.Configuration.factory-TokenLoginModule
+    jaas.controlFlag="sufficient"
+    jaas.classname="org.apache.jackrabbit.oak.security.authentication.token.TokenLoginModule"
+    jaas.ranking=I"200"
+
+[artifacts startLevel=15 runModes=oak_mongo]
+
+  org.mongodb/mongo-java-driver/2.14.0
+
+[configurations runModes=oak_mongo]
+  org.apache.jackrabbit.oak.plugins.document.DocumentNodeStoreService
+    cache=I"5"
+
+[artifacts startLevel=15 runModes=oak_tar]
+
+  org.apache.jackrabbit/oak-segment/${oak.version}
+
+[configurations runModes=oak_tar]
+  org.apache.jackrabbit.oak.plugins.segment.SegmentNodeStoreService
+    name="Default\ NodeStore"
+
+[feature name=repoinit]
+
+[artifacts]
+
+  org.apache.sling/org.apache.sling.jcr.repoinit/1.0.2
+  org.apache.sling/org.apache.sling.provisioning.model/1.4.4
+  org.apache.sling/org.apache.sling.repoinit.parser/1.0.4
+
+[feature name=sling]
+
+[variables]
+  jackrabbit.version=2.13.1
+
+[artifacts]
+
+  commons-codec/commons-codec/1.9
+  commons-collections/commons-collections/3.2.2
+  commons-lang/commons-lang/2.6
+  org.apache.commons/commons-lang3/3.4
+  org.apache.felix/org.apache.felix.http.whiteboard/3.0.0
+  org.apache.sling/org.apache.sling.adapter/2.1.8
+  org.apache.sling/org.apache.sling.api/2.14.2
+  org.apache.sling/org.apache.sling.bundleresource.impl/2.2.0
+  org.apache.sling/org.apache.sling.commons.mime/2.1.8
+  org.apache.sling/org.apache.sling.commons.osgi/2.4.0
+  org.apache.sling/org.apache.sling.commons.scheduler/2.5.0
+  org.apache.sling/org.apache.sling.commons.threads/3.2.6
+  org.apache.sling/org.apache.sling.serviceusermapper/1.2.2
+  #org.apache.sling/org.apache.sling.servlets.get/2.1.18
+  #org.apache.sling/org.apache.sling.servlets.post/2.3.12
+  #org.apache.sling/org.apache.sling.servlets.resolver/2.4.4
+  #org.apache.sling/org.apache.sling.xss/1.0.14
+
+[artifacts startLevel=5]
+
+  commons-fileupload/commons-fileupload/1.3.1
+  commons-io/commons-io/2.4
+  org.apache.aries.jmx/org.apache.aries.jmx.api/1.1.0
+  org.apache.aries.jmx/org.apache.aries.jmx.core/1.1.1
+  org.apache.aries.jmx/org.apache.aries.jmx.whiteboard/1.0.0
+  org.apache.felix/org.apache.felix.inventory/1.0.4
+  org.apache.felix/org.apache.felix.webconsole.plugins.ds/2.0.2
+  org.apache.felix/org.apache.felix.webconsole.plugins.event/1.1.4
+  org.apache.felix/org.apache.felix.webconsole.plugins.memoryusage/1.0.6
+  org.apache.felix/org.apache.felix.webconsole.plugins.packageadmin/1.0.2
+  org.apache.felix/org.apache.felix.webconsole/4.2.16
+  org.apache.geronimo.bundles/json/20090211_1
+  org.apache.sling/org.apache.sling.commons.json/2.0.18
+  org.apache.sling/org.apache.sling.extensions.threaddump/0.2.2
+  org.apache.sling/org.apache.sling.extensions.webconsolebranding/1.0.0
+  org.apache.sling/org.apache.sling.extensions.webconsolesecurityprovider/1.0.0
+
+[artifacts startLevel=10]
+
+  org.apache.felix/org.apache.felix.http.sslfilter/1.1.0
+  org.apache.felix/org.apache.felix.metatype/1.1.2
+  org.apache.felix/org.apache.felix.scr/2.0.6
+  org.apache.tika/tika-core/1.13
+
+[artifacts startLevel=15]
+
+  io.dropwizard.metrics/metrics-core/3.1.0
+  org.apache.jackrabbit/jackrabbit-api/${jackrabbit.version}
+  org.apache.jackrabbit/jackrabbit-data/${jackrabbit.version}
+  org.apache.jackrabbit/jackrabbit-jcr-commons/${jackrabbit.version}
+  org.apache.jackrabbit/jackrabbit-jcr-rmi/${jackrabbit.version}
+  org.apache.jackrabbit/jackrabbit-spi-commons/${jackrabbit.version}
+  org.apache.jackrabbit/jackrabbit-spi/${jackrabbit.version}
+  org.apache.sling/org.apache.sling.commons.metrics/1.0.0
+  org.apache.sling/org.apache.sling.extensions.explorer/1.0.4
+  org.apache.sling/org.apache.sling.jcr.api/2.4.0
+  org.apache.sling/org.apache.sling.jcr.base/2.4.0
+  org.apache.sling/org.apache.sling.jcr.jcr-wrapper/2.0.0
+  org.apache.sling/org.apache.sling.jcr.registration/1.0.2
+  org.apache.sling/org.apache.sling.jcr.webconsole/1.0.2
+
+[configurations]
+  org.apache.sling.commons.log.LogManager
+    org.apache.sling.commons.log.pattern="%d{dd.MM.yyyy HH:mm:ss.SSS}\ *%level*\ [%thread]\ %logger\ %msg%n"
+    org.apache.sling.commons.log.file="logs/error.log"
+    org.apache.sling.commons.log.level="info"
+    org.apache.sling.commons.log.file.size="'.'yyyy-MM-dd"
+    org.apache.sling.commons.log.file.number=I"7"
+
+  org.apache.sling.engine.impl.log.RequestLogger
+    access.log.enabled=B"true"
+    request.log.outputtype=I"0"
+    access.log.output="log.access"
+    request.log.output="log.request"
+    request.log.enabled=B"true"
+    access.log.outputtype=I"0"
+
+  org.apache.sling.commons.log.LogManager.factory.config-access.log
+    org.apache.sling.commons.log.pattern="%msg%n"
+    org.apache.sling.commons.log.names=["log.access"]
+    org.apache.sling.commons.log.file="logs/access.log"
+    org.apache.sling.commons.log.level="info"
+
+  org.apache.sling.commons.log.LogManager.factory.config-request.log
+    org.apache.sling.commons.log.pattern="%msg%n"
+    org.apache.sling.commons.log.names=["log.request"]
+    org.apache.sling.commons.log.file="logs/request.log"
+    org.apache.sling.commons.log.level="info"
+
+[feature name=sling.extensions.jobs]
+
+[artifacts]
+
+  com.google.code.gson/gson/2.2.4
+  org.apache.commons/commons-pool2/2.4.2
+  org.apache.geronimo.specs/geronimo-j2ee-management_1.1_spec/1.0.1
+  org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1
+  org.apache.sling/org.apache.sling.jms/0.0.1-SNAPSHOT
+  org.apache.sling/org.apache.sling.jobs/0.0.1-SNAPSHOT
+  org.apache.sling/org.apache.sling.mom/0.0.1-SNAPSHOT
+
+[configurations]
+  org.apache.sling.jobs.impl.JobQueueConsumerFactory
+    queue-name="org/apache/sling/jobs/assets"
+
+  org.apache.sling.amq.ActiveMQConnectionFactoryService
+    jms.brokerUri="tcp\://activemq\:61616"
+
+[feature name=standalone]
+
+[artifacts startLevel=5 runModes=:standalone]
+
+  org.apache.felix/org.apache.felix.http.jetty/3.2.4
+  org.apache.felix/org.apache.felix.http.servlet-api/1.1.2
+
