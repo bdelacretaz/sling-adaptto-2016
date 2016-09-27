@@ -15,6 +15,6 @@ RUN \
   echo "${CONFD_MD5}  /usr/local/bin/confd" | md5sum -c && \
   chmod +x /usr/local/bin/confd
 
-RUN chmod +x /*.sh
 COPY fsroot /
+RUN chmod +x /*.sh
 CMD ["/bin/bash","/start.sh"]
