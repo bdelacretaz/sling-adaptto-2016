@@ -3,7 +3,9 @@
 # Using the etcd hostname didn't work on some networks, not sure why
 ETCD_IP=$(ping etcd -c 1 | head -1 | cut -d'(' -f2 | cut -d')' -f1)
 NODE=http://$ETCD_IP:4001
-echo "Will use $NODE to connect to etcd"
+
+echo "Will use $NODE to connect to etcd, waiting for that port to be open..."
+/wait-for-it.sh $ETCD_IP:4001 
 
 # WARNING make sure this is consistent between start.sh and reload.sh
 haproxy -D -f /etc/haproxy/haproxy.cfg -p /var/haproxy/haproxy.pid -sf $(cat /var/haproxy/haproxy.pid)
