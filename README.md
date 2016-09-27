@@ -17,6 +17,11 @@ This drawing, from the conference slides, explains the system:
 
 ![REDDR demo system overview](images/reddr-overview.png)
 
+## TODO / feedback from adaptTo 2016
+* Fix networking issue, if your network has a host named 'etcd' for example this conflicts with our `etcd` container
+* Improve the Sling instances health checks so that haproxy registers them once they're actually ready
+* Processor instances might announce their capabilities more precisely, for example "I can handle slingshot/* resource types"
+
 ## Prerequisites
 You need a Docker server and `docker-compose` setup to run this.
 
