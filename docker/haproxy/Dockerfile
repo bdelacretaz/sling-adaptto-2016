@@ -14,6 +14,7 @@ RUN \
   curl -L https://github.com/kelseyhightower/confd/releases/download/v0.7.1/confd-0.7.1-linux-amd64 -o /usr/local/bin/confd && \
   echo "${CONFD_MD5}  /usr/local/bin/confd" | md5sum -c && \
   chmod +x /usr/local/bin/confd
-    
+
+RUN chmod +x /*.sh
 COPY fsroot /
 CMD ["/bin/bash","/start.sh"]
