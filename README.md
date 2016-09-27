@@ -48,7 +48,7 @@ To build the required OSGi bundles and Sling Docker images, run `mvn clean insta
 
 This might require a few SNAPSHOT bundles from Sling, you can get the Sling code from http://github.com/apache/sling/ if needed.
 
-Currently the `contrib/commons/mom` modules are needed.
+Currently the `contrib/commons/mom` and `samples/slingshot` modules are needed.
 
 ## Starting the cluster
 To start the cluster, build the required Docker images as shown above and then, from the `docker` 
