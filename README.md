@@ -27,8 +27,8 @@ You need a Docker server and `docker-compose` setup to run this.
 
 Unless you already have such a setup, https://www.docker.com/docker-toolbox is a good way to get started.
 
-You Docker host needs at least 4G of memory to run this cluster comfortably. See the `docker-machine` docs
-for the relevant options for your machine backend, if applicable.
+This was tested on a Docker host with 16G of memory, if you have less than that you might not be able to
+start all the services.
 
 After installing `docker-compose`, you can test it from this folder, as follows:
 
@@ -50,9 +50,16 @@ This might require a few SNAPSHOT bundles from Sling, you can get the Sling code
 
 Currently the `contrib/commons/mom` and `samples/slingshot` modules are needed.
 
+## Docker Hostname
+The hostname used to connect to your Docker host depends on your setup:
+* On macosx with a recent Docker "native" setup it's `localhost`
+* On systems using `docker-machine` you can use `docker-machine ip default` to find the IP address of the Docker host
+
+This README uses `localhost`, you might have to adapt to your setup.
+
 ## Starting the cluster
 To start the cluster, build the required Docker images as shown above and then, from the `docker` 
-folder found under this `README` file , assuming `localhost` points to your Docker host:
+folder found under this `README` file.
 
     # Remove existing state, if any
     docker-compose kill
