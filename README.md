@@ -21,6 +21,9 @@ This drawing, from the conference slides, explains the system:
 * Fix networking issue, if your network has a host named 'etcd' for example this conflicts with our `etcd` container
 * Improve the Sling instances health checks so that haproxy registers them once they're actually ready
 * Processor instances might announce their capabilities more precisely, for example "I can handle slingshot/* resource types"
+* Currently requests first hit haproxy, where they are proxied to the reddr service, which makes a request to the Sling selector
+instance to find out where to run the request and makes another request to haproxy with the `Sling-Processor-Role` header. There's no
+real reason to hit the haproxy first.
 
 ## Prerequisites
 You need a Docker server and `docker-compose` setup to run this.
