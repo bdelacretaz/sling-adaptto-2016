@@ -255,3 +255,10 @@ Last command should dump the json dump of all nodes under newly created
     $curl -u admin:admin http://localhost/content/foo-1.png.tidy.-1.json
     
 There you can see a new node under rendition named `1280x1200`
+
+Asset processing makes use of [Sling MOM][1] and [Sling ActiveMQ based Jobs][2] feature which has been implemented as part of [SLING-5645][3]
+
+
+[1]: https://github.com/apache/sling/tree/trunk/contrib/commons/mom/api
+[2]: https://github.com/apache/sling/tree/trunk/contrib/commons/mom/examples/jobs/core
+[3]: https://issues.apache.org/jira/browse/SLING-5645
