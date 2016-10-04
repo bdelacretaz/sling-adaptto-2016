@@ -1,10 +1,10 @@
 # adaptTo() 2016 -  can we run the whole Web on Sling?
 This is the demo code for our http://adapt.to/2016/en/schedule/let_s-run-the-whole-web-on-apache-sling-and-oak-.html talk.
 
-The scripts folder has the demo scenario for the conference presentation, similar to the below scenario but
-more up to date. (TODO update this page after the conference).
+The conference slides are at http://www.slideshare.net/bdelacretaz/can-we-run-the-whole-web-on-apache-sling
 
-If you're at adaptTo 2016 and want to play with this, **please download the Docker images in advance**. Running `mvn clean install` in this folder and `docker-compose up -d`in the `docker` folder does that.
+The scripts folder has the demo scenario for the conference presentation, similar to the below scenario but
+reflecting more precisely what we demoed at the conference.
 
 This is obviously not production-ready - just pure researchy experimental stuff for now.
 
