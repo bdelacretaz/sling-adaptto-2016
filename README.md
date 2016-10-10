@@ -1,6 +1,14 @@
 # adaptTo() 2016 -  can we run the whole Web on Sling?
 This is the demo code for our http://adapt.to/2016/en/schedule/let_s-run-the-whole-web-on-apache-sling-and-oak-.html talk.
 
+It's a cluster of Sling instances built using `docker-compose`, which demonstrates dynamic routing of HTTP requests to multiple pools of Sling instances, using a Sling instance to define where a request is processed. This allows us to use the full power of the Sling resource and script resolution to route requests, creating a very dynamic and "morphable" cluster.
+
+A minimal workflow demo uses ActiveMQ to distribute the load and simulate creating image renderings using specialized Sling worker instances.
+
+A simple build system is used to create Docker images of specialized Sling instances very easily, using just a Sling provisioning model (a few text files) and a trivial Dockerfile.
+
+The whole thing is meant to demonstrate "thinking in systems" when working with Sling, as opposed to thinking in server instances.
+
 The conference slides are at http://www.slideshare.net/bdelacretaz/can-we-run-the-whole-web-on-apache-sling
 
 The scripts folder has the demo scenario for the conference presentation, similar to the below scenario but
