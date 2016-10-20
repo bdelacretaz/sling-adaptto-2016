@@ -245,9 +245,9 @@
   org.apache.commons/commons-pool2/2.4.2
   org.apache.geronimo.specs/geronimo-j2ee-management_1.1_spec/1.0.1
   org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1
-  org.apache.sling/org.apache.sling.jms/0.0.1-SNAPSHOT
-  org.apache.sling/org.apache.sling.jobs/0.0.1-SNAPSHOT
-  org.apache.sling/org.apache.sling.mom/0.0.1-SNAPSHOT
+  org.apache.sling/org.apache.sling.jms/1.0.0
+  org.apache.sling/org.apache.sling.jobs/1.0.0
+  org.apache.sling/org.apache.sling.mom/1.0.0
 
 [configurations]
   org.apache.sling.jobs.impl.JobQueueConsumerFactory
